@@ -1,0 +1,184 @@
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-05
+
+    Updated configure.ac to check for required packages
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-05
+
+    Updated copyright statements in all files to correctly implement GPL. Corrected issue in configure.ac resulting in mpfr library tag being added to compilation steps multiple times
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-01
+
+    Cleaned working file from repo
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-01
+
+    Updated API to include function _mca_seed to seed RNG. Updated documentation with corrections and changes to API, version number, updated readme to include quick install instructions. Removed temp demo files from project and updated demo to include original source for knuth test, makefile now able to compile both versions
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-29
+
+    Updated README with changes to dir structure
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-29
+
+    Fixed issue with long double types, updated documentation to include instruction to run ldconfig
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-29
+
+    Revised github release to include long double support, (no MCA functionality added for long double only standard IEEE 754 arithmetic to allow CIL modules to cover all cases and avoid build error). CIL now only support up to 1.7.1 to avoid circular dependancy error with 1.7.{2, 3, 3.beta}. Documentation ammended to note CIL support limitations. Test cases for long double methods added to test suite.
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-28
+
+    Completed documentation for auto-tools implementation and complete github release
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-24
+
+    Continued work on MCALIB documentation, need to complete final section on MCALIB interface
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-23
+
+    Completed implementation of test suite, now working on completing documentation. Have added dir for cil ext files and included fphooks and fpsimplify
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-22
+
+    Removed temp files for ./tests
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-22
+
+    Updated with initial work on unit testing, all test files contained in ./tests
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-21
+
+    Added check_lib commands for MPFR back into configure.ac
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-21
+
+    Updated readme files for autotools implementation, started work on documentation
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-17
+
+    Completed autotools implementation
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-16
+
+    Switched to cmake
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-04-16
+
+    Working on automake/conf implementation
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-03-07
+
+    Updated mcalib master repo to include mca operation type for precision bounding only, random rounding only and full mca
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-02-28
+
+    Tidied up makefile
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-01-15
+
+    Corrected master repo to remove traces of mp work and files not required for master repo, for any mp work see varDep branch
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-09-09
+
+    Updated to check address values rather than ID
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-09-09
+
+    Working on producing example result set with chebyshev polynomial
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-09-05
+
+    Updated master to work with new cilly structure
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-30
+
+    Reverted master branch to original MCALIB project
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-29
+
+    Removed debug printfs
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-26
+
+    Fixed bugs and tested with linpack and KRLS
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-25
+
+    Fixed all bugs and ran successful test with linpack
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-22
+
+    Modified all mcalib files to work with new cilly format and tested succesfully with small example, currently testing with LINPACK, error with include files
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-19
+
+    Updated for changes to cilly, functions need to be re-written
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-18
+
+    Fixed seg fault issue and tested with MPFR, all working and ready for test with cilly
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-17
+
+    Converted new range analysis work to use MPFR, currently compiles but seg fault occurs
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-16
+
+    Fixed all issues, can now be updated for MPFR and tested
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-16
+
+    Created print results method and updated test_table to test range analysis with MCALIB
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-15
+
+    Fixed issue with global LUR variable, (now staticly declared inside MCALIB function), and corrected Makefile
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-15
+
+    Created deletion methods for LUT and tested for leaks with valgrind, now updating MCALIB methods
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-12
+
+    Fixed seg fault and modified LUT to be doubly linked ordered list with shortest travel path search
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-11
+
+    working on LUT for range analysis
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-10
+
+    Added header file for lookup table
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-07-10
+
+    Updated with correct implementation of global pararmeters and added mcalib_types header file
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-06-17
+
+    Removed w = p + t + 3 from mcalib functions, returned to w = p + t form, all theory testing will now be done in branch mcalib_thry_test
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-06-07
+
+    Updated c and h files to use correct T values and fixed compile errors
+
+Merge: 2d4a8bb badf67f
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-06-07
+
+    Merged with master
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-06-07
+
+    Master update
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-04-29
+
+    Created new version with multiple t values (sgl t, dbl t, and quad t) for mixed precision implementation
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-04-29
+
+    Removed binaries and working files
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2013-04-29
+
+    Initial commit with current library version 0.0.2

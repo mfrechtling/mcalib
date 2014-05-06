@@ -1,0 +1,92 @@
+The Monte Carlo Arihmetic Library - A tool for automated rounding error analysis
+of floating point software. Copyright (C) 2014 The Computer Engineering
+Laboratory, The University of Sydney. Maintained by Michael Frechtling:
+
+	michael.frechtling@sydney.edu.au
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
+
+---------------------------------------------------------------------------------
+
+The MCALIB distribution contains the following files, (not including
+files added by git).
+
+AUTHORS		- the authors of the library
+COPYING		- the GNU General Public License, version 3
+ChangeLog	- the log of changes
+INSTALL		- how to install MCALIB
+Makefile*	- files for building the library
+README		- this file
+ac*.m4		- automatic configuration files
+compile		- auxiliary installation file
+config.*	- auxiliary installation files
+configure*	- configuration files
+depcomp		- auxiliary installation file
+doc/		- directory containing the documentation (manual, FAQ)
+install-sh	- installation file
+ltmain.sh	- auxiliary installation file
+m4/		- directory containing additional configuration files
+missing		- auxiliary installation file
+src/		- directory containing the MCALIB source
+tests/		- directory containing the testsuite (for "make check")
+cil_ext/	- directory containing CIL extension modules
+demo/		- directory containing demo project
+
+---------------------------------------------------------------------------------
+
+You can get the latest source code by git using:
+
+---------------------------------------------------------------------------------
+
+Quick Install Instructions:
+
+The following pre-requisite libraries should be installed using ap-get install
+or its equivalent:
+
+	- make
+	- m4
+	- automake
+	- texinfo
+	- ocaml
+	- ocaml-findlib
+	- libmpfr-dev
+
+Before installing MCALIB the C Intermediate Language (CIL) compiler cilly should
+be installed. MCALIB supports CIL up to v1.7.1, use subsequent versions will
+cause build errors. The following steps should be used to install cilly for use
+with MCALIB:
+
+	- Download the CIL source from
+	  http://sourceforge.net/projects/cil/files/cil/cil-1.7.1.tar.gz/download
+	  and extract.
+	- Copy the CIL extension modules fphooks.ml and fpsimplify.ml from
+	  /.../mcalib-1.0.1/cil_ext/ to /.../cil-1.7.1/src/ext
+	- Configure the installation using:
+		./configure EXTRAFEATURES='fpsimplify fphooks'
+	- Build using:
+		make
+	- Install using
+		make install
+
+MCALIB can now be installed using the following commands:
+
+	- ./configure
+	- make
+	- make check
+	- make install
+
+Any issues with the build or install process should be reported to
+michael.frechtling@sydney.edu.au, please include the file config.log in your bug
+report.
+
+---------------------------------------------------------------------------------

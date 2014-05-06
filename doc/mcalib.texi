@@ -1,0 +1,949 @@
+\input texinfo   @c -*-texinfo-*-
+@comment $Id@w{$}
+@c %**start of header
+@setfilename mcalib.info
+@documentencoding UTF-8
+@set VERSION 1.0.1
+@set EDITION 1.0.1
+@set UPDATED May 2014
+@settitle MCALIB @value{VERSION}
+@synindex tp fn
+@iftex
+@afourpaper
+@end iftex
+@comment %**end of header
+@copying
+This manual documents the installation and use of MCALIB, (version @value{VERSION}, @value{UPDATED}).
+
+Copyright @copyright{} 2014 The Computer Engineering
+Laboratory, The University of Sydney.
+
+@quotation
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+@end quotation
+@end copying
+
+@dircategory Software libraries
+@direntry
+* mcalib: (mcalib).                 Monte Carlo Arithmetic Library
+@end direntry
+
+@c  html <meta name=description content="...">
+@documentdescription
+How to install and use MCALIB, the Monte Carlo Arithmetic Library, version @value{VERSION}.
+@end documentdescription
+
+@c smallbook
+@finalout
+@setchapternewpage on
+
+@ifnottex
+@node Top, Conditions, (dir), (dir)
+@top MCALIB
+@end ifnottex
+
+@iftex
+@titlepage
+@title MCALIB
+@subtitle The Monte Carlo Arithmetic Library
+@subtitle Edition @value{EDITION} for Version @value{VERSION}
+@subtitle @value{UPDATED}
+
+@author Michael Frechtling
+@email{michael.frechtling@@sydney.edu.au}
+
+@c Include the Distribution inside the titlepage so
+@c that headings are turned off.
+
+@tex
+\global\parindent=0pt
+\global\parskip=8pt
+\global\baselineskip=13pt
+@end tex
+
+@page
+@vskip 0pt plus 1filll
+@end iftex
+
+@insertcopying
+@ifnottex
+@sp 1
+@end ifnottex
+
+@iftex
+@end titlepage
+@headings double
+@end iftex
+
+@c  Don't bother with contents for html, the menus seem adequate.
+@ifnothtml
+@contents
+@end ifnothtml
+
+@menu
+* Conditions::		MCALIB Conditions of Use
+* Introduction::	Introduction to MCALIB
+* Installation::	Installation of MCALIB
+* Background::		MCA Background
+* MCALIB Interface::	MCALIB Interface
+* References::	
+* License::		GNU Free Documentation License
+* Index::
+* Function Index::	Function and Type Index
+@end menu
+
+@c  @m{T,N} is $T$ in tex or @math{N} otherwise.  This is an easy way to give
+@c  different forms for math in tex and info.  Commas in N or T don't work,
+@c  but @C{} can be used instead.  \, works in info but not in tex.
+@iftex
+@macro m {T,N}
+@tex$\T\$@end tex
+@end macro
+@end iftex
+@ifnottex
+@macro m {T,N}
+@math{\N\}
+@end macro
+@end ifnottex
+
+@c  Usage: @GMPabs{x}
+@c  Give either |x| in tex, or abs(x) in info or html.
+@tex
+\gdef\GMPabs#1{|#1|}
+@end tex
+@ifnottex
+@macro GMPabs {X}
+@abs{}(\X\)
+@end macro
+@end ifnottex
+
+@c  Usage: @GMPtimes{}
+@c  Give either \times or the word "times".
+@tex
+\gdef\GMPtimes{\times}
+@end tex
+@ifnottex
+@macro GMPtimes
+times
+@end macro
+@end ifnottex
+
+@c  New math operators.
+@c  @abs{} can be used in both tex and info, or just \abs in tex.
+@tex
+\gdef\abs{\mathop{\rm abs}}
+@end tex
+@ifnottex
+@macro abs
+abs
+@end macro
+@end ifnottex
+
+@c  @times{} made available as a "*" in info and html (already works in tex).
+@ifnottex
+@macro times
+*
+@end macro
+@end ifnottex
+
+@c  Math operators already available in tex, made available in info too.
+@c  For example @log{} can be used in both tex and info.
+@ifnottex
+@macro le
+<=
+@end macro
+@macro ge
+>=
+@end macro
+@macro ne
+<>
+@end macro
+@macro log
+log
+@end macro
+@end ifnottex
+
+@c  @pom{} definition
+@tex
+\gdef\pom{\ifmmode\pm\else$\pm$\fi}
+@end tex
+@ifnottex
+@macro pom
+±
+@end macro
+@end ifnottex
+
+@c The following macro have been copied from gmp.texi
+@c
+@c  Usage: @MPFRpxreftop{info,title}
+@c
+@c  Like @pxref{}, but designed for a reference to the top of a document, not
+@c  a particular section.
+@c
+@c  The texinfo manual recommends putting a likely section name in references
+@c  like this, eg. "Introduction", but it seems better to just give the title.
+@c
+@iftex
+@macro MPFRpxreftop{info,title}
+see @cite{\title\}.
+@end macro
+@end iftex
+@ifhtml
+@macro MPFRpxreftop{info,title}
+see @cite{\title\}.
+@end macro
+@end ifhtml
+@ifnottex
+@ifnothtml
+@macro MPFRpxreftop{info,title}
+@pxref{Top,\title\,\title\,\info\,\title\}
+@end macro
+@end ifnothtml
+@end ifnottex
+
+@node Conditions, Introduction, Top, Top
+@comment  node-name, next, previous, up
+@unnumbered MCALIB Conditions of Use
+@cindex Software License
+
+The Monte Carlo Arihmetic Library - A tool for automated rounding error analysis
+of floating point software. Copyright (C) 2014 The Computer Engineering
+Laboratory, The University of Sydney. Maintained by Michael Frechtling, 
+(michael.frechtling@@sydney.edu.au).
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+@node Introduction, Installation, Conditions, Top
+@comment  node-name, next, previous, up
+@chapter Introduction to MCALIB
+@cindex Introduction
+
+Run-time analysis provides an effective method for measuring the sensitivity of
+programs to rounding errors. To date, implementations have required significant
+changes to source code, detracting from their widespread application. In this
+work we present a system that automates the quantitative analysis of floating
+point rounding errors, through the use of C-based source-to-source compilation
+and a Monte Carlo Arithmetic library.
+
+Monte Carlo Arithmetic (MCA) tracks rounding errors at run-time by applying
+randomization to input and output operands forcing the results of FP operations
+to behave like random variables. This turns an execution into trials of a Monte
+Carlo simulation allowing statistics on the effects of rounding error to be
+obtained over a number of executions. Statistical measurements are then used to
+analyse the results, sensitivity to rounding error is suspected if a high level
+of variance is observed between trials. As an example, consider the subtraction
+11111113 - 11111111 in decimal arithmetic using 8 significant digits. In
+standard arithmetic, the answer is 2.0000000 and 7 digits of significance are
+lost due to cancellation. With MCA, the answer for a particular trial is
+2.xxxxxxx where the x’s are random digits. Only the most significant digit will
+be unchanged over a number of trials and so a large standard deviation will
+result. Despite the advantages offered by MCA and similar techniques, tools for
+rounding error analysis are not in common usage. It is believed that one of the
+major barriers is that source code needs to be modified so that custom libraries
+are called to execute the arithmetic operations. In this work, the use of source
+to source compilation, supported by mixed precision libraries, is advocated. The
+approach allows for the implementation of a general purpose FP analysis tool
+that can be applied to arbitrary programs without significant changes to the
+source code. The implementation provides opportunities for wider adoption of
+runtime error analysis, and allows developers to test both the accuracy of
+algorithms and the suitability of different FP formats for a particular
+implementation.
+
+@node Installation, Background, Introduction, Top
+@comment  node-name, next, previous, up
+@chapter Installation of MCALIB
+@cindex Installation
+
+The following section provides details on the installation of the MCALIB shared
+libary and the cilly source to source compiler. The guide presented is intended
+as a quick start guide and full details on the installation process can be found
+in the @file{INSTALL} file supplied with the pacakge. Details on the use of
+MCALIB with source to source compilation are provided in @ref{MCALIB Interface}.
+
+@section Installation Pre-requisites
+@cindex Pre-requisite Libraries
+@subsection Required Pacakges
+The following packages should be installed before commencing with installation,
+these pacakges may be installed using @samp{apt-get install} in debian
+derivatives or it's equivalent in other systems.
+
+@itemize @bullet
+@item @samp{make}
+@item @samp{m4}
+@item @samp{automake}
+@item @samp{texinfo}
+@item @samp{ocaml}
+@item @samp{ocaml-findlib}
+@item @samp{libmpfr-dev}
+@end itemize
+
+@subsection CIL
+@cindex CIL
+@cindex cilly
+In order to automatically translate floating point operations to calls to MCALIB
+functions source to source compilation CIL, (the C Intermediate Language),
+is used. This requires the installation of the @samp{cilly} compiler configured
+with the @file{fphooks.ml} and @file{fpsimplify.ml} extensions provided as part
+of MCALIB. The CIL source is available from
+@url{http://sourceforge.net/projects/cil/files/cil/cil-1.7.1.tar.gz/download}
+and documentation including full installation instructions is available from
+@url{http://www.cs.berkeley.edu/~necula/cil/}. Please note that MCALIB only
+supports CIL up to version 1.7.1, versions 1.7.2 onwards are not supported and
+attempting installation using these versions will result in a build error. For
+the purposes of MCALIB installation should be performed according to the
+following instructions:
+
+@enumerate
+
+@item Download the source from the location given above and extract. Copy the
+extension modules @file{fphooks.ml} and @file{fpsimplify.ml} provided in the
+MCALIB pacakge in @samp{/.../mcalib-1.0.1/cil_ext} to the CIL extension
+directory @file{/.../cil-1.7.1/src/ext} and install using the following commands
+
+@item @samp{./configure EXTRAFEATURES=`fpsimplify fphooks'}
+
+Configure the CIL installation for your system including the MCALIB extension
+modules.
+
+@item @samp{make}
+
+Build the CIL compiler @samp{cilly}
+
+@item @samp{make install}
+
+Install the CIL compiler
+
+@end enumerate
+
+@section MCALIB Installation
+@cindex MCALIB Installation
+Having ensured all pre-requisite libraries are installed MCALIB may be installed
+using the following commands
+
+@enumerate
+
+@item @samp{./configure}
+
+Configure the MCALIB installation for your system
+
+@item @samp{make}
+
+Build the MCALIB shared library @file{libmca.a}
+
+@item @samp{make check}
+
+Optional step to perform tests of the built libary to ensure correctness.
+Testing is performed using the test suite suppled in
+@file{/.../mcalib-2.0.0/tests/}. Failed tests should be reported to Michael
+Frechtling, (@email{michael.frechtling@@sydney.edu.au}). Please include the file
+@file{config.log} in your bug report.
+
+@item @samp{make install}
+
+Install the shared library to @file{/usr/local/lib/} and the header files
+@file{mcalib.h} and @file{mcalib_types.h} to @file{/usr/local/include}.
+
+@item @samp{sudo ldconfig}
+
+Update links and cached used by the run-time linker allowing access to MCALIB
+shared library.
+
+@end enumerate
+
+@section Alternate Build Targets
+@cindex Build Targets
+The followig build targets are also available once the configuration step of the
+installation process has been completed.
+
+@itemize @bullet
+
+@item @samp{make clean}
+
+Remove working files from the build directory, (removes oject and archive files,
+but not configuration files).
+
+@item @samp{make distclean}
+
+Remove working files from the build directory, including configuration files.
+
+@item @samp{make dvi}
+@cindex dvi
+
+Create and/or update the @file{.dvi} version of this document.
+
+@item @samp{make html}
+@cindex html
+
+Create and/or update the @file{.html} version of this document.
+
+@item @samp{make info}
+@cindex info
+
+Create and/or update the @file{.info} version of this document.
+
+@item @samp{make pdf}
+@cindex pdf
+
+Create and/or update the @file{.pdf} version of this document.
+
+@item @samp{make ps}
+@cindex ps
+
+Create and/or update the @file{.ps} version of this document.
+
+@item @samp{make uninstall}
+
+Remove the shared libary from @file{/usr/local/lib} and header files from
+@file{/usr/local/include}.
+
+@end itemize
+
+@node Background, MCALIB Interface, Installation, Top
+@comment  node-name, next, previous, up
+@chapter Background
+@cindex Background
+
+@section Monte Carlo Arithmetic
+@cindex Monte Carlo Arithmetic
+MCA is designed to track information lost using finite precision arithmetic by
+modeling inexactness using the application of random perturbations. If @math{x}
+is a non-zero FP value of the form is a non-zero FP value of the form @math{x =
+(-1)^s m 2^e} the inexact function is defined as:
+
+@iftex
+@center @math{inexact(x, t, @xi) = (-1)^{s_x}(m_x + 2^{-t} @xi)2^{e_x}}
+@end iftex
+@ifnottex
+@center @math{inexact(x, t, \xi) = (-1)^\{s_x\}(m_x + 2^\{-t\} \xi)2^\{e_x\}}
+@end ifnottex
+
+@iftex
+where @math{x @in R}, @math{x @neq 0}, @math{t} is a positive integer
+representing the virtual precision, @math{@xi} is a uniformly distributed random
+variable in the range @math{(-1/2, 1/2)}, @math{(@xi @in U
+(−1/2, 1/2))} and @math{m_x}, @math{e_x} are the significand and
+exponent of @math{x}. It is assumed that @math{0 < t @leq p}. An operation
+@math{@circ @in @{+, −, @times, @div@}} is implemented as: 
+
+@center @math{x @circ y = round(inexact(inexact(x) @circ inexact(y)))}
+@end iftex
+@ifnottex
+where @math{x \in R}, @math{x \neq 0}, @math{t} is a positive integer
+representing the virtual precision, @math{\xi} is a uniformly distributed random
+variable in the range @math{(-1/2, 1/2)}, @math{(\xi \in U
+(−1/2, 1/2))} and @math{m_x}, @math{e_x} are the significand and
+exponent of @math{x}. It is assumed that @math{0 < t \leq p}. An operation
+@math{\circ \in \{+, −, \times, \div\}} is implemented as: 
+
+@center @math{x \circ y = round(inexact(inexact(x) \circ inexact(y)))}
+@end ifnottex
+
+This results in the inexact() function being applied to both operands and
+the final result. Adjustments to the operands are referred to as precision
+bounding and are used to detect catastrophic cancellation, while adjustments to
+the final result are referred to as random rounding and are used to detect
+rounding error. MCALIB performs both precision
+bounding and random rounding by first applying a random perturbation to each
+input operand, performing the required operation, then applying a random
+perturbation to the result. The inexact() function as implemented for MCALIB
+applies random perturbations using uniform absolute random values. Values for
+@iftex
+@math{@xi} are uniformly distributed over @math{(−1/2, 1/2)} with mean 0 and
+standard deviation @math{1/@sqrt{12}}. If @math{x} is a random variable, then
+inexact(@math{x}) has a mean @math{E[x]}, (expected value of @math{x}), and a
+standard deviation of @math{@sqrt{S[x]^2 + 2^{2(e−t)}/12}}, (where @math{S[x]}
+@end iftex
+@ifnottex
+@math{\xi} are uniformly distributed over @math{(−1/2, 1/2)} with mean 0 and
+standard deviation @math{1/\sqrt\{12\}}. If @math{x} is a random variable, then
+inexact(@math{x}) has a mean @math{E[x]}, (expected value of @math{x}), and a
+standard deviation of @math{\sqrt\{S[x]^2 + 2^\{2(e−t)\}/12\}}, (where @math{S[x]}
+@end ifnottex
+is the standard deviation of the input @math{x}). The virtual precision value
+@math{t} is used to control the level of random perturbation applied during MCA.
+This, in turn, controls the accuracy of the Monte Carlo operations. A large
+@math{t} value will result in a smaller exponent value for the operand
+perturbation, increasing the accuracy of the operation. Similarly, a smaller
+@math{t} decreases the accuracy. In practice, @math{t} is used to determine the
+minimum precision required to perform specific operation accurately. The
+precision is set to its lowest value then repeated computations are performed as
+the precision is increased. When the required number of significant figures of
+the result have stabilized (i.e the required accuracy has been achieved) the
+minimum FP precision required to perform the operation accurately using standard
+IEEE-754 FP operators is determined. The implementation developed for this paper
+thus performs variable precision MCA, and the value of @math{t} used by the MCA
+library can be modified at any time during execution.
+
+@section Source to Source Compilation
+@cindex Source to Source Compilation
+Source to source compilation provides an effective tool for automated code
+transformations, and when paired with error analysis techniques allows for the
+implementation of automated SW verification. The C Intermediate Language (CIL)
+is a high level language representation including a set of tools for analysis
+and source to source compilation of C programs. The CIL compiler cilly is
+implemented as a Perl script that performs translations to C code as defined in
+a set of OCaml modules provided as part of the CIL library. For the purposes of
+MCALIB CIL has been used for transforming C FP operations into calls to the
+MCALIB library. This has been done by first lowering the source code to a single
+statement assignment form, then converting FP operations to use MCALIB library
+functions. As an example the following single precision multiplication
+operation:
+
+@samp{a = b * c;}
+
+would be redefined to the following function call:
+
+@samp{a = _floatmul(b, c);}
+
+where @samp{float _floatmul(float a, float b)} is the MCALIB function for
+handling single precision MCA multiplication. This process will result in all
+supported FP operations being replaced with function calls to the MCALIB
+library. It is important to note that although operations are done in a higher
+precision, the storage requirements of the FP variables remain unchanged. This
+avoids portability issues associated with pointers and dynamic memory
+allocation.
+
+@section Mixed Precision Implementation using MPFR
+@cindex MPFR
+MCA has been implemented within MCALIB as a set of library functions for
+arithmetic and comparison operations. One of the primary
+difficulties with implementing MCA is the need to extend the precision of the FP
+format being tested in order to simulate infinite precision. The precision level
+must include @math{p} machine bits and @math{t} virtual bits, a total precision
+requirement of @math{W = p + t}, where @math{W} is the working precision of the
+MCA operation. The MCALIB library also implements variable precision MCA,
+@iftex
+allowing the virtual precision to vary between @math{1 @leq t @leq p} at
+@end iftex
+@ifnottex
+allowing the virtual precision to vary between @math{1 \leq t \leq p} at
+@end ifnottex
+runtime. To achieve this functionality the mixed precision library MPFR is used
+for mixed precision arithmetic in MCALIB.
+
+For MCA functions, FP values are converted to mpfr_t type variables. The mpfr_t
+type is a struct containing an arbitrary precision significand and a fixed
+precision exponent. The precision of the significand of any MPFR variable may be
+set independently at runtime to any value between MPFR_PREC_MIN and
+@samp{MPFR_PREC_MAX}, i.e. 2 and 256 respectively. For the purposes of MCALIB,
+the maximum precision required is @math{W_{max} = p + t_{max}} which evaluates
+to 106 when using double precision operators. Rounding in MPFR adheres to the C
+implementation of the IEEE-754 standard and the default rounding mode round to
+nearest even is used for MCALIB.
+
+The function for implementing MCA for an individual operation is shown below:
+
+@example
+float _mca_bin(float x, float y) @{
+    x = extend(x_f, p + t);
+    y = extend(x_f, p + t);
+    r = extend(0.0, p + t);
+    x = inexact(x);
+    y = inexact(y);
+    r = mpfr_op(x, y);
+    r = inexact(r);
+    r_f = round(r, p);
+    return r_f;
+@}
+@end example
+
+The FP operands are first converted to mpfr_t with precision W , and the result
+variable is initialized with the same precision. The random perturbation
+@math{\xi}  is applied to the input operands using the inexact function as
+follows:
+
+@cindex inexact function
+
+@example
+mpfr_t _mca_inexact(mpfr_t x) @{
+    if (x == 0) @{
+        return x;
+    @} else @{
+        e_f = (rand() / RAND_MAX) - 0.5;
+        e = extend(e_f, p + t);
+        e = mpfr_mul(pow(2, exp_x - (t - 1)), e);
+        x = mpfr_add(x, e);
+        return x;
+    @}
+@}
+@end example
+
+
+The arithmetic operation is then performed using an MPFR operation, rounded to
+@math{W} bits. Random rounding is then applied to the result using the inexact
+function and the final result is then converted to its original format by
+rounding to @math{p} bits. 
+
+@node MCALIB Interface, References, Background, Top
+@comment  node-name, next, previous, up
+@chapter MCALIB Interface
+@cindex Interface
+
+@section Using the Shared Library
+@cindex Shared Library Interface
+Correct implemenation of MCA using MCALIB requies a small number of manual
+modifications to the original source code, namely, the MCALIB libary header
+should be inluded, MCA control parameters set to determine the behaivour of the
+MCA implemenation, and the C standard library random number generator,
+@samp{rand()} should be correctly seeded. For the purposes of this section these
+modifications will be demonstrated on a sample arithmetic program implementing
+the Knuth Test:
+
+@example
+#include "stdlib.h"
+#include "stdio.h"
+#include "math.h"
+
+#define floatval_t double
+
+void knuth_test(void) @{
+    floatval_t a = 11111113, b = -11111111, c = 7.5111111;
+    floatval_t u = a + (b + c);
+    floatval_t v = (a + b) + c;
+    printf("U = %g\tV = %g\n", u, v);
+@}
+
+int main(void) @{
+    knuth_test();
+    return 0;
+@}
+@end example
+
+A completed version of the modified project along with a Makefile and the
+original un-modified source can be found in @file{/.../mcalib-2.0.0/demo/} and
+can be executed using the following commands:
+
+@example
+make clean; make
+./knuth
+@end example
+
+Alternatively the original implementation can be executed using:
+
+@example
+make clean; make knuth
+./knuth
+@end example
+
+@subsection Headers
+@cindex Header Files
+The first modification required is to add a delcaration including the MCALIB
+header file @samp{mcalib.h}. All variable and function delcarations required for
+using MCALIB are performed in this file and it should be included in any project
+using MCALIB. Modifying the example project to include the MCALIB header file is
+shown below;
+
+@example
+#include "stdlib.h"
+#include "stdio.h"
+#include "math.h"
+#include "mcalib.h"
+@end example
+
+@subsection Control Parameters
+@cindex Control Parameters and Symbols
+Implementation of MCA is controlled using two parameters, @samp{MCALIB_T} sets
+the value of the virtual precision, t, and @samp{MCALIB_OP_TYPE} enables and
+disables MCA. Pre-defined symbols are declared in @samp{mcalib.h} and can be
+used to control the implementation as follows;
+
+@itemize @bullet
+
+@item @samp{MCALIB_IEEE}
+
+Disable MCA functions and use standard floating point operators
+
+@item @samp{MCALIB_MCA}
+
+Enable MCA using both precision bounding, (inbound), and random rounding,
+(outbound).
+
+@item @samp{MCALIB_PB}
+
+Enable MCA using precision bounding only.
+
+@item @samp{MCALIB_RR}
+
+Enable MCA using random rounding only.
+
+@end itemize
+
+Application of these control parameters to the worked example is shown below. In
+this case we are setting the virtual precision to 24 to test single precision
+performance and enabling the MCA functions for the function @samp{knuth_test()}
+only.
+
+@example
+int main(void) @{
+    MCALIB_T = 24;                      //Set the value of the MCA virtual precision
+    MCALIB_OP_TYPE = MCALIB_MCA;        //Enable MCA functions
+    knuth_test();			
+    MCALIB_OP_TYPE = MCALIB_IEEE;       //Disable MCA functions
+    return 0;
+@}
+@end example
+
+@subsection Seed for Random Number Generator
+@cindex Random Number Generator
+@cindex Seed Value
+MCALIB utilizes the standard library function @samp{rand()} to generate random
+numbers for using in the @samp{inexact()} function. As such the random number
+generator should be correctly seeded in order to ensure correct implemenation of
+MCA functions. The function @samp{void _mca_seed(void)} has been included as
+part of MCALIB for the purposes of seeding the standard library RNG and should
+be called before any floating point operators are used:
+
+@example
+int main(void) @{
+    _mca_rand();                        //Seed the random number generator
+    MCALIB_T = 24;                      //Set the value of the MCA virtual precision
+    MCALIB_OP_TYPE = MCALIB_MCA;        //Enable MCA functions
+    knuth_test();			
+    MCALIB_OP_TYPE = MCALIB_IEEE;       //Disable MCA functions
+    return 0;
+@}
+@end example
+
+@subsection Using MCALIB with Source to Source Compilation
+@cindex Compilation
+At this stage the worked example is ready to be compiled with MCALIB. In order
+to access the MCALIB arithmetic functions to perform the floating point
+calculations two options are available. The floating point operations can be
+manually re-written using MCALIB arithmetic functions;
+
+@example
+u = _doubleadd(_doubleadd(a, b), c);
+v = _doubleadd(a, _doubleadd(b, c));
+@end example
+
+In this case the example can be compiled as normal, adding the option
+@samp{-lmca} to the compile command to link the shared libary;
+
+@example
+gcc knuth.c -o knuth -lm -lmca
+@end example
+
+This process of re-writing floating point operations becomes tedious for
+anything beyond simple examples, for this reason with have included CIL
+extension modules that automatically re-write floating point operations using
+source-to-source compilation. To use this function, the original operations
+should be left unchanged;
+
+@example
+u = (a +  b) + c;
+v = a + (b + c);
+@end example
+
+and compiled with the following command;
+
+@example
+cilly --save-temps --dofphooks --dosimplify --dooneRet --dofpsimplify
+knuth.c -o knuth_test -lm -lmca
+@end example
+
+This results in the following compilation process;
+
+@example
+gcc -D_GNUCC -E -DCIL=1 knuth.c -o ./knuth.i
+/usr/local/libexec/cil/obj/x86_LINUX/cilly.asm.exe --out ./knuth.cil.c
+--dofphooks --dosimplify --dooneRet --dofpsimplify ./knuth.i
+gcc -D_GNUCC -E ./knuth.cil.c -o ./knuth.cil.i
+gcc -D_GNUCC -c -o ./knuth.o ./knuth.cil.i
+gcc -D_GNUCC -o knuth ./knuth.o -lm -lmca
+@end example
+
+and the the original floating point operations being re-written as follows, (as
+can be seen in the temporary file @file{knuth.cil.c};
+
+@example
+#line 14
+    __cil_tmp6 = _doubleadd(a, b);
+#line 14
+    u = _doubleadd(__cil_tmp6, c);
+#line 15
+    __cil_tmp7 = _doubleadd(b, c);
+#line 15
+    v = _doubleadd(a, __cil_tmp7);
+@end example
+
+@section Arithmetic Functions
+@cindex Arithmetic Functions
+The following section lists the arithmetic functions available from MCALIB.
+
+@deftypefun float _floatadd (float @var{a}, float @var{b})
+Single precision addition operation
+@end deftypefun
+@deftypefun float _floatsub (float @var{a}, float @var{b})
+Single precision subtraction operation
+@end deftypefun
+@deftypefun float _floatmul (float @var{a}, float @var{b})
+Single precision multiplication operation
+@end deftypefun
+@deftypefun float _floatdiv (float @var{a}, float @var{b})
+Single precision division operation
+@end deftypefun
+@deftypefun float _floatneg (float @var{a}, float @var{b})
+Single precision negation operation
+@end deftypefun
+@deftypefun double _doubleadd (double @var{a}, double @var{b})
+Double precision addition operation
+@end deftypefun
+@deftypefun double _doublesub (double @var{a}, double @var{b})
+Double precision subtraction operation
+@end deftypefun
+@deftypefun double _doublemul (double @var{a}, double @var{b})
+Double precision multiplication operation
+@end deftypefun
+@deftypefun double _doublediv (double @var{a}, double @var{b})
+Double precision division operation
+@end deftypefun
+@deftypefun double _doubleneg (double @var{a}, double @var{b})
+Double precision negation operation
+@end deftypefun
+@deftypefun {long double} _longadd (long double @var{a}, long double @var{b})
+Extended, (long double), precision addition operation. Does not implement MCA functionality, implements standard IEEE-754 arithmetic.
+@end deftypefun
+@deftypefun {long double} _longsub (long double @var{a}, long double @var{b})
+Extended, (long double), precision subtraction operation. Does not implement MCA functionality, implements standard IEEE-754 arithmetic.
+@end deftypefun
+@deftypefun {long double} _longmul (long double @var{a}, long double @var{b})
+Extended, (long double), precision multiplication operation. Does not implement MCA functionality, implements standard IEEE-754 arithmetic.
+@end deftypefun
+@deftypefun {long double} _longdiv (long double @var{a}, long double @var{b})
+Extended, (long double), precision division operation. Does not implement MCA functionality, implements standard IEEE-754 arithmetic.
+@end deftypefun
+@deftypefun {long double} _longneg (long double @var{a}, long double @var{b})
+Extended, (long double), precision negation operation. Does not implement MCA functionality, implements standard IEEE-754 arithmetic.
+@end deftypefun
+
+@section Comparison Functions
+@cindex Comparison Functions
+The following section lists the comparison functions available from MCALIB.
+
+@deftypefun int _floateq (float @var{a}, float @var{b})
+Single precision boolean equal operation
+@end deftypefun
+@deftypefun int _floatne (float @var{a}, float @var{b})
+Single precision boolean not equal operation
+@end deftypefun
+@deftypefun int _floatlt (float @var{a}, float @var{b})
+Single precision boolean less than operation
+@end deftypefun
+@deftypefun int _floatgt (float @var{a}, float @var{b})
+Single precision boolean greater than operation
+@end deftypefun
+@deftypefun int _floatle (float @var{a}, float @var{b})
+Single precision boolean less than or equal operation
+@end deftypefun
+@deftypefun int _floatge (float @var{a}, float @var{b})
+Single precision boolean greater than or equal operation
+@end deftypefun
+@deftypefun int _doubleeq (double @var{a}, double @var{b})
+Double precision boolean equal operation
+@end deftypefun
+@deftypefun int _doublene (double @var{a}, double @var{b})
+Double precision boolean not equal operation
+@end deftypefun
+@deftypefun int _doublelt (double @var{a}, double @var{b})
+Double precision boolean less than operation
+@end deftypefun
+@deftypefun int _doublegt (double @var{a}, double @var{b})
+Double precision boolean greater than operation
+@end deftypefun
+@deftypefun int _doublele (double @var{a}, double @var{b})
+Double precision boolean less than or equal operation
+@end deftypefun
+@deftypefun int _doublege (double @var{a}, double @var{b})
+Double precision boolean greater than or equal operation
+@end deftypefun
+@deftypefun int _longeq (long double @var{a}, long double @var{b})
+Extended, (long double), precision boolean equal operation.
+@end deftypefun
+@deftypefun int _longne (long double @var{a}, long double @var{b})
+Extended, (long double), precision boolean not equal operation.
+@end deftypefun
+@deftypefun int _longlt (long double @var{a}, long double @var{b})
+Extended, (long double), precision boolean less than operation.
+@end deftypefun
+@deftypefun int _longgt (long double @var{a}, long double @var{b})
+Extended, (long double), precision boolean greater than operation.
+@end deftypefun
+@deftypefun int _longle (long double @var{a}, long double @var{b})
+Extended, (long double), precision boolean less than or equal operation.
+@end deftypefun
+@deftypefun int _longge (long double @var{a}, long double @var{b})
+Extended, (long double), precision boolean greater than or equal operation.
+@end deftypefun
+
+@node References, License, MCALIB Interface, Top
+@comment  node-name, next, previous, up
+@unnumbered References
+
+@itemize @bullet
+
+@item Ian Foster, Stephen Taylor, A Compiler Approach to Scalable
+Concurrent-Program Design. ACM Transactions on Programming Languages and Systems
+(TOPLAS) 16, 3, 577-604, 1994.
+
+@item
+Laurent Fousse, Guillaume Hanrot, Vincent Lef@`evre,
+Patrick P@'elissier and Paul Zimmermann,
+MPFR: A Multiple-Precision Binary Floating-Point Library With Correct
+Rounding,
+ACM Transactions on Mathematical Software,
+volume 33, issue 2, article 13, 15 pages, 2007,
+@url{http://doi.acm.org/10.1145/1236463.1236468}.
+
+@item Fran@,{c}ois Irigoin, Pierre Jouvelot, R@`emi Triolet, Semantical
+Interprocedural Parallelization: An Overview of the PIPS Project, Proceedings of
+the 5th International Conference on Supercomputing, ACM, 244-251, 1991.
+
+@item G. Necula, S. McPeak, S Rahul, W. Weimer, CIL: Intermediate Language and
+Tools for Analysis and Transformation of C Programs, Compiler Construction,
+Springer, 209-265, 2002.
+
+@item Thi Viet Nga Nguyen, Fran@,{c}ois Irigoin, Efficient and Effective Array
+Bound Checking, ACM Transactions on Programming Languages and Systems (TOPLAS),
+27, 3, 527-570, 2005.
+
+@item Douglas Stott Parker, Monte Carlo Arithmetic: Exploiting Randomness in
+Floating-Point Arithmetic, Computer Science Department, UCLA, 1997,
+@url{http://www.cs.ucla.edu/~stott/mca/CSD-970002.ps.gz}
+
+@end itemize
+
+@node License, Index, References, Top
+@comment  node-name, next, previous, up
+@appendix GNU Free Documentation License
+
+@include fdl.texi
+
+
+@node Index, Function Index, License, Top
+@comment  node-name, next, previous, up
+@unnumbered Index
+
+@printindex cp
+
+@node Function Index, , Index, Top
+@comment  node-name, next, previous, up
+@unnumbered Function and Type Index
+@printindex fn
+
+@bye
