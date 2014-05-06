@@ -16,7 +16,7 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see <http://www.gnu.org/licenses/>.
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 The MCALIB distribution contains the following files, (not including
 files added by git).
@@ -42,11 +42,13 @@ tests/		- directory containing the testsuite (for "make check")
 cil_ext/	- directory containing CIL extension modules
 demo/		- directory containing demo project
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 You can get the latest source code by git using:
 
----------------------------------------------------------------------------------
+	git clone https://github.com/mfrechtling/mcalib.git
+
+--------------------------------------------------------------------------------
 
 Quick Install Instructions:
 
@@ -89,4 +91,4 @@ Any issues with the build or install process should be reported to
 michael.frechtling@sydney.edu.au, please include the file config.log in your bug
 report.
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
