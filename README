@@ -44,9 +44,13 @@ demo/		- directory containing demo project
 
 --------------------------------------------------------------------------------
 
-You can get the latest source code by git using:
+You can get the latest source code via github using:
 
 	git clone https://github.com/mfrechtling/mcalib.git
+
+Or via direct download:
+
+	https://github.com/mfrechtling/mcalib/archive/master.zip
 
 --------------------------------------------------------------------------------
 
