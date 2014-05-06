@@ -40,9 +40,7 @@ AC_CHECK_PROG(OCAMLFIND, ocamlfind, ocamlfind)
 if test "x$OCAMLFIND" == x; then
 	AC_MSG_ERROR(Could not find valid ocaml-findlib installation - please install using apt-get install ocaml-findlib)
 fi
-AC_CHECK_FUNCS([pow])
-AC_CHECK_FUNCS([gettimeofday])
-AC_CHECK_FUNCS([rand])
+AC_CHECK_FUNCS([pow gettimeofday rand])
 AC_CHECK_LIB([mpfr], [mpfr_clear], , AC_MSG_ERROR([Couldn't find mpfr shared lib... try downloading the source \
 from http://www.mpfr.org]))
 AC_CHECK_HEADERS([mpfr.h], , AC_MSG_ERROR([Couldn't find mpfr.h... try downloading the source \
