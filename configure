@@ -11273,7 +11273,7 @@ CC="$lt_save_CC"
 
 
 
-#AC_PROG_LIBTOOL
+
 
 # Checks for programs.
 ac_ext=c

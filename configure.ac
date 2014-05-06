@@ -12,7 +12,7 @@ AM_INIT_AUTOMAKE
 #Libtool Iinitialisation
 LT_INIT
 AC_CONFIG_MACRO_DIR([m4])
-#AC_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 # Checks for programs.
 AC_PROG_CC
