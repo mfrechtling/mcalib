@@ -1,5 +1,29 @@
 Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
 
+    Update to autotools files and replacement of m4/ directory
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
+
+    Replaced fdl and version tex info files for documentation
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
+
+    Modified all autotools files to comply with make dist implemetation for public release
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
+
+    Corrected issue with configure.ac where AC_CHECK_FUNC run three times rather than once with multiple functions to check. This was causing the config.status --recheck to rerun the configure script from the Makefile
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
+
+    Modified configure.ac to fix issue with configure script being called from make file
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
+
+    Removed working files from repo, updated Changelog
+
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
+
     Updated README with direct link to source zip file download, updated Changelog
 
 Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
