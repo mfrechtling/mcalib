@@ -1,3 +1,18 @@
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-12
+
+    Updated changelong, removed vim install line from auto_install script, added duncan.moss to AUTHORS
+
+Merge: f7e7bbe 003fc81
+Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-12
+
+    Merge pull request #1 from djmmoss/master
+    
+    mca setup script, best to run as root
+
+Duncan Moss <djm.moss@gmail.com>	2014-05-12
+
+    mca setup script, best to run as root
+
 Michael Frechtling <michael.frechtling@sydney.edu.au>	2014-05-06
 
     Update to autotools files and replacement of m4/ directory
