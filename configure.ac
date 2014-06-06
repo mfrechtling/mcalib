@@ -45,5 +45,7 @@ AC_CHECK_LIB([mpfr], [mpfr_clear], , AC_MSG_ERROR([Couldn't find mpfr shared lib
 from http://www.mpfr.org]))
 AC_CHECK_HEADERS([mpfr.h], , AC_MSG_ERROR([Couldn't find mpfr.h... try downloading the source \
 from http://www.mpfr.org]))
+AC_CHECK_LIB([gsl], [gsl_qrng_get], , )
+AC_CHECK_LIB([gslcblas], [cblas_caxpy], , AC_MSG_ERROR([Couldn't find gsl shared lib...]))
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile tests/Makefile])
 AC_OUTPUT

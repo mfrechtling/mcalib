@@ -25,11 +25,16 @@
 #include "math.h"
 #include "stdlib.h"
 #include "time.h"
+#include "gsl/gsl_qrng.h"
 
-#define MCALIB_IEEE 	0
-#define MCALIB_MCA 	1
-#define MCALIB_PB	2
-#define MCALIB_RR	3
+#define MCALIB_OP_IEEE 	0
+#define MCALIB_OP_MCA 	1
+#define MCALIB_OP_PB	2
+#define MCALIB_OP_RR	3
+
+#define MCALIB_RNG_UNFM	0
+#define MCALIB_RNG_ANT	1
+#define MCALIB_RNG_SBL	2
 
 #define MP_ADD &mpfr_add
 #define MP_SUB &mpfr_sub
@@ -39,6 +44,11 @@
 
 typedef int (*mpfr_bin)(mpfr_t, mpfr_t, mpfr_t, mpfr_rnd_t);
 typedef int (*mpfr_unr)(mpfr_t, mpfr_t, mpfr_rnd_t);
+
+typedef struct {
+	double *rand;
+	int index;
+} mcalib_antithetic;
 
 extern float _mca_sbin(float a, float b, mpfr_bin mpfr_op);
 extern float _mca_sunr(float a, mpfr_unr mpfr_op);

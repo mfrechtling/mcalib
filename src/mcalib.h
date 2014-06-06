@@ -27,15 +27,21 @@
 #define MP_DIV &mpfr_div
 #define MP_NEG &mpfr_neg
 
-#define MCALIB_IEEE	0
-#define MCALIB_MCA 	1
-#define MCALIB_PB 	2
-#define MCALIB_RR	3
+#define MCALIB_OP_IEEE	0
+#define MCALIB_OP_MCA 	1
+#define MCALIB_OP_PB 	2
+#define MCALIB_OP_RR	3
+
+#define MCALIB_RNG_UNFM	0
+#define MCALIB_RNG_ANT	1
+#define MCALIB_RNG_SBL	2
 
 extern int MCALIB_OP_TYPE;
+extern int MCALIB_RNG_TYPE;
 extern int MCALIB_T;
 
-extern void _mca_seed(void);
+extern void _mca_init(void);
+extern void _mca_clear(void);
 
 extern int _floateq(float a, float b);
 extern int _floatne(float a, float b);
