@@ -28,7 +28,6 @@ int 	MCALIB_OP_TYPE 		= MCALIB_OP_IEEE;
 int 	MCALIB_RNG_TYPE		= MCALIB_RNG_UNFM;
 int 	MCALIB_T		= 24;
 
-mcalib_antithetic *_mca_atrng;
 struct mcalib_list *MCALIB_LUT = NULL;
 
 /******************** MCA RANDOM FUNCTIONS ********************
@@ -37,45 +36,34 @@ struct mcalib_list *MCALIB_LUT = NULL;
 * operands
 ***************************************************************/	
 
-double _mca_runf(void) {
+double _mca_runf(unsigned id) {
 	while(1) {
 		double d_rand = ((double)rand() / (double)RAND_MAX);
 		if ((d_rand > 0.) & (d_rand < 1.0)) {
+			printf("RAND, %d, %x, %.16e\n", 0, (id & 0xf), d_rand - 0.5);
 			return d_rand;
 		}
 	}
 }
 
-double _mca_atrand(void) {
-	if (_mca_atrng->index == 0) {
-		_mca_atrng->rand[0] = _mca_runf();
-		_mca_atrng->rand[1] = (0. - (_mca_atrng->rand[0] - 0.5)) + 0.5;
-		_mca_atrng->index = 1;
-	} else {
-		_mca_atrng->index = 0;
-	}
-	return _mca_atrng->rand[1 - _mca_atrng->index];
-}
-
-double _mca_qrand(mcalib_index *index) {
+double _mca_get_rand(mcalib_index *index) {
 	double ret;
-	if (MCALIB_LUT == NULL) {
-		MCALIB_LUT = mcalib_new_list();
-	}
-	mcalib_get_data(MCALIB_LUT, index, &ret);
+	mcalib_get_data(MCALIB_RNG_TYPE, MCALIB_LUT, index, &ret);
+	printf("RAND, %d, %x, %.16e\n", 0, *index->id & 0xf, ret - 0.5);
 	return ret;
 }
 
 double _mca_rand(mcalib_index *index) {
+	double ret;
 	switch(MCALIB_RNG_TYPE) {
 		case MCALIB_RNG_UNFM :
+			ret = _mca_runf(*index->id);
 			mcalib_clear_index(index);
-			return _mca_runf();
+			return ret;
 		case MCALIB_RNG_ANT :
-			mcalib_clear_index(index);
-			return _mca_atrand();
+			return _mca_get_rand(index);
 		case MCALIB_RNG_SBL :
-			return _mca_qrand(index);
+			return _mca_get_rand(index);
 	}
 }
 
@@ -113,19 +101,24 @@ void _mca_init(void) {
 	struct timeval t1;
 	gettimeofday(&t1, NULL);
 	srand(t1.tv_usec * t1.tv_sec);
-	_mca_atrng = (mcalib_antithetic*)malloc(sizeof(mcalib_antithetic));
-	_mca_atrng->rand = (double*)malloc(2 * sizeof(double));
-	_mca_atrng->index = 0;
+	MCALIB_LUT = mcalib_new_list();
 }
 
 void _mca_clear(void) {
 	mcalib_clear_list(MCALIB_LUT);
-	free(_mca_atrng->rand);
-	free(_mca_atrng);
 }
 
-void make_index(mcalib_index *index, unsigned id, char *file_name, unsigned line_number) {
-
+void make_index(mcalib_index *index, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one) {
+	char location[128];
+	char buffer[10];
+	int temp = sprintf(buffer, "%d", line_number);
+	strcpy(location, file_name);
+	strcat(location, ":");
+	strcat(location, buffer);
+	strncpy(index->location, location, 128);
+	*index->id = id;
+	*index->addr_lvl_zero = addr_lvl_zero;
+	*index->addr_lvl_one = addr_lvl_one;
 }
 
 /******************** MCA ARITHMETIC FUNCTIONS ********************
@@ -135,7 +128,7 @@ void make_index(mcalib_index *index, unsigned id, char *file_name, unsigned line
 * to the original format for return
 *******************************************************************/
 
-float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_number, mpfr_bin mpfr_op) {
+float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_bin mpfr_op) {
 	mpfr_t mpfr_a, mpfr_b, mpfr_r;
 	mpfr_prec_t prec = 24 + MCALIB_T;
 	mpfr_rnd_t rnd = MPFR_RNDN;
@@ -145,9 +138,9 @@ float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_nu
 	if (MCALIB_OP_TYPE != MCALIB_OP_RR) {
 		mcalib_index *index_a, *index_b;
 		index_a = mcalib_new_index();
-		make_index(index_a, ((id << 4) + 0xa), file_name, line_number);
+		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		index_b = mcalib_new_index();
-		make_index(index_b, ((id << 4) + 0xb), file_name, line_number);
+		make_index(index_b, ((id << 4) + 0xb), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		_mca_inexact(mpfr_a, rnd, index_a);
 		_mca_inexact(mpfr_b, rnd, index_b);
 	}
@@ -155,7 +148,7 @@ float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_nu
 	if (MCALIB_OP_TYPE != MCALIB_OP_PB) {
 		mcalib_index *index_r;
 		index_r = mcalib_new_index();
-		make_index(index_r, ((id << 4) + 0xc), file_name, line_number);
+		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		_mca_inexact(mpfr_r, rnd, index_r);
 	}
 	float ret = mpfr_get_flt(mpfr_r, rnd);
@@ -165,7 +158,7 @@ float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_nu
 	return NEAREST_FLOAT(ret);
 }
 
-float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, mpfr_unr mpfr_op) {
+float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_unr mpfr_op) {
 	mpfr_t mpfr_a, mpfr_r;
 	mpfr_prec_t prec = 24 + MCALIB_T;
 	mpfr_rnd_t rnd = MPFR_RNDN;
@@ -174,14 +167,14 @@ float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, mpf
 	if (MCALIB_OP_TYPE != MCALIB_OP_RR) {
 		mcalib_index *index_a;
 		index_a = mcalib_new_index();
-		make_index(index_a, ((id << 4) + 0xa), file_name, line_number);
+		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		_mca_inexact(mpfr_a, rnd, index_a);
 	}
 	mpfr_op(mpfr_r, mpfr_a, rnd);
 	if (MCALIB_OP_TYPE != MCALIB_OP_PB) {
 		mcalib_index *index_r;
 		index_r = mcalib_new_index();
-		make_index(index_r, ((id << 4) + 0xc, file_name, line_number);
+		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		_mca_inexact(mpfr_r, rnd, index_r);
 	}
 	float ret = mpfr_get_flt(mpfr_r, rnd);
@@ -190,7 +183,7 @@ float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, mpf
 	return NEAREST_FLOAT(ret);
 }
 
-double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line_number, mpfr_bin mpfr_op) {
+double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_bin mpfr_op) {
 	mpfr_t mpfr_a, mpfr_b, mpfr_r;
 	mpfr_prec_t prec = 53 + MCALIB_T;
 	mpfr_rnd_t rnd = MPFR_RNDN;
@@ -200,9 +193,9 @@ double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line
 	if (MCALIB_OP_TYPE != MCALIB_OP_RR) {
 		mcalib_index *index_a, *index_b;
 		index_a = mcalib_new_index();
-		make_index(index_a, ((id << 4) + 0xa), file_name, line_number);
+		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		index_b = mcalib_new_index();
-		make_index(index_b, ((id << 4) + 0xb), file_name, line_number);
+		make_index(index_b, ((id << 4) + 0xb), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		_mca_inexact(mpfr_a, rnd, index_a);
 		_mca_inexact(mpfr_b, rnd, index_b);
 	}
@@ -210,7 +203,7 @@ double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line
 	if (MCALIB_OP_TYPE != MCALIB_OP_PB) {
 		mcalib_index *index_r;
 		index_r = mcalib_new_index();
-		make_index(index_r, ((id << 4) + 0xc), file_name, line_number);
+		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		_mca_inexact(mpfr_r, rnd, index_r);
 	}
 	double ret = mpfr_get_d(mpfr_r, rnd);
@@ -220,7 +213,7 @@ double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line
 	return NEAREST_DOUBLE(ret);
 }
 
-double _mca_dunr(double a, mpfr_unr mpfr_op) {
+double _mca_dunr(double a, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_unr mpfr_op) {
 	mpfr_t mpfr_a, mpfr_r;
 	mpfr_prec_t prec = 53 + MCALIB_T;
 	mpfr_rnd_t rnd = MPFR_RNDN;
@@ -229,14 +222,14 @@ double _mca_dunr(double a, mpfr_unr mpfr_op) {
 	if (MCALIB_OP_TYPE != MCALIB_OP_RR) {
 		mcalib_index *index_a;
 		index_a = mcalib_new_index();
-		make_index(index_a, ((id << 4) + 0xa), file_name, line_number);
+		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		_mca_inexact(mpfr_a, rnd, index_a);
 	}
 	mpfr_op(mpfr_r, mpfr_a, rnd);
 	if (MCALIB_OP_TYPE != MCALIB_OP_PB) {
 		mcalib_index *index_r;
 		index_r = mcalib_new_index();
-		make_index(index_r, ((id << 4) + 0xc), file_name, line_number);
+		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addr_lvl_zero, addr_lvl_one);
 		_mca_inexact(mpfr_r, rnd, index_r);
 	}
 	double ret = mpfr_get_d(mpfr_r, rnd);
@@ -382,53 +375,53 @@ int _longge(long double a, long double b, unsigned id, char *file_name, unsigned
 
 
 float _floatadd(float a, float b, unsigned id, char *file_name, unsigned line_number) {
-	//return a + b
-	return _mca_sbin(a, b, id, file_name, line_number,(mpfr_bin)MP_ADD);
+	//return a + bi
+	return _mca_sbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_ADD);
 }
 
 float _floatsub(float a, float b, unsigned id, char *file_name, unsigned line_number) {
 	//return a - b
-	return _mca_sbin(a, b, id, file_name, line_number, (mpfr_bin)MP_SUB);
+	return _mca_sbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_SUB);
 }
 
 float _floatmul(float a, float b, unsigned id, char *file_name, unsigned line_number) {
 	//return a * b
-	return _mca_sbin(a, b, id, file_name, line_number, (mpfr_bin)MP_MUL);
+	return _mca_sbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_MUL);
 }
 
 float _floatdiv(float a, float b, unsigned id, char *file_name, unsigned line_number) {
 	//return a / b
-	return _mca_sbin(a, b, id, file_name, line_number, (mpfr_bin)MP_DIV);
+	return _mca_sbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_DIV);
 }
 
 float _floatneg(float a, unsigned id, char *file_name, unsigned line_number) {
 	//return -a
-	return _mca_sunr(a, id, file_name, line_number, (mpfr_unr)MP_NEG);
+	return _mca_sunr(a, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_unr)MP_NEG);
 }
 
 double _doubleadd(double a, double b, unsigned id, char *file_name, unsigned line_number) {
 	//return a + b
-	return _mca_dbin(a, b, id, file_name, line_number, (mpfr_bin)MP_ADD);
+	return _mca_dbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_ADD);
 }
 
 double _doublesub(double a, double b, unsigned id, char *file_name, unsigned line_number) {
 	//return a - b
-	return _mca_dbin(a, b, id, file_name, line_number, (mpfr_bin)MP_SUB);
+	return _mca_dbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_SUB);
 }
 
 double _doublemul(double a, double b, unsigned id, char *file_name, unsigned line_number) {
 	//return a * b
-	return _mca_dbin(a, b, id, file_name, line_number, (mpfr_bin)MP_MUL);
+	return _mca_dbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_MUL);
 }
 
 double _doublediv(double a, double b, unsigned id, char *file_name, unsigned line_number) {
 	//return a / b
-	return _mca_dbin(a, b, id, file_name, line_number, (mpfr_bin)MP_DIV);
+	return _mca_dbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_DIV);
 }
 
 double _doubleneg(double a, unsigned id, char *file_name, unsigned line_number) {
 	//return -a
-	return _mca_dunr(a, id, file_name, line_number, (mpfr_unr)MP_NEG);
+	return _mca_dunr(a, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_unr)MP_NEG);
 }
 
 long double _longadd(long double a, long double b, unsigned id, char *file_name, unsigned line_number) {

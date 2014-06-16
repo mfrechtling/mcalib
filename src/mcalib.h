@@ -43,42 +43,42 @@ extern int MCALIB_T;
 extern void _mca_init(void);
 extern void _mca_clear(void);
 
-extern int _floateq(float a, float b);
-extern int _floatne(float a, float b);
-extern int _floatlt(float a, float b);
-extern int _floatgt(float a, float b);
-extern int _floatle(float a, float b);
-extern int _floatge(float a, float b);
+extern int _floateq(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern int _floatne(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern int _floatlt(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern int _floatgt(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern int _floatle(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern int _floatge(float a, float b, unsigned id, char *file_name, unsigned line_number);
 
-extern int _doubleeq(double a, double b);
-extern int _doublene(double a, double b);
-extern int _doublelt(double a, double b);
-extern int _doublegt(double a, double b);
-extern int _doublele(double a, double b);
-extern int _doublege(double a, double b);
+extern int _doubleeq(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern int _doublene(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern int _doublelt(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern int _doublegt(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern int _doublele(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern int _doublege(double a, double b, unsigned id, char *file_name, unsigned line_number);
 
-extern int _longeq(long double a, long double b);
-extern int _longne(long double a, long double b);
-extern int _longlt(long double a, long double b);
-extern int _longgt(long double a, long double b);
-extern int _longle(long double a, long double b);
-extern int _longge(long double a, long double b);
+extern int _longeq(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern int _longne(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern int _longlt(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern int _longgt(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern int _longle(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern int _longge(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
 
-extern float _floatadd(float a, float b);
-extern float _floatsub(float a, float b);
-extern float _floatmul(float a, float b);
-extern float _floatdiv(float a, float b);
-extern float _floatneg(float a);
+extern float _floatadd(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern float _floatsub(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern float _floatmul(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern float _floatdiv(float a, float b, unsigned id, char *file_name, unsigned line_number);
+extern float _floatneg(float a, unsigned id, char *file_name, unsigned line_number);
 
-extern double _doubleadd(double a, double b);
-extern double _doublesub(double a, double b);
-extern double _doublemul(double a, double b);
-extern double _doublediv(double a, double b);
-extern double _doubleneg(double a);
+extern double _doubleadd(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern double _doublesub(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern double _doublemul(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern double _doublediv(double a, double b, unsigned id, char *file_name, unsigned line_number);
+extern double _doubleneg(double a, unsigned id, char *file_name, unsigned line_number);
 
-extern long double _longadd(long double a, long double b);
-extern long double _longsub(long double a, long double b);
-extern long double _longmul(long double a, long double b);
-extern long double _longdiv(long double a, long double b);
-extern long double _longneg(long double a);
+extern long double _longadd(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern long double _longsub(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern long double _longmul(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern long double _longdiv(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
+extern long double _longneg(long double a, unsigned id, char *file_name, unsigned line_number);
 #endif 
