@@ -36,11 +36,11 @@ struct mcalib_list *MCALIB_LUT = NULL;
 * operands
 ***************************************************************/	
 
-double _mca_runf(unsigned id) {
+double _mca_runf(void) {
 	while(1) {
 		double d_rand = ((double)rand() / (double)RAND_MAX);
 		if ((d_rand > 0.) & (d_rand < 1.0)) {
-			printf("RAND, %d, %x, %.16e\n", 0, (id & 0xf), d_rand - 0.5);
+			//printf("RAND, %d, %x, %.16e\n", 0, (id & 0xf), d_rand - 0.5);
 			return d_rand;
 		}
 	}
@@ -49,7 +49,7 @@ double _mca_runf(unsigned id) {
 double _mca_get_rand(mcalib_index *index) {
 	double ret;
 	mcalib_get_data(MCALIB_RNG_TYPE, MCALIB_LUT, index, &ret);
-	printf("RAND, %d, %x, %.16e\n", 0, *index->id & 0xf, ret - 0.5);
+//	printf("RAND, %d, %x, %.16e\n", 0, *index->id & 0xf, ret - 0.5);
 	return ret;
 }
 
@@ -57,7 +57,7 @@ double _mca_rand(mcalib_index *index) {
 	double ret;
 	switch(MCALIB_RNG_TYPE) {
 		case MCALIB_RNG_UNFM :
-			ret = _mca_runf(*index->id);
+			ret = _mca_runf();
 			mcalib_clear_index(index);
 			return ret;
 		case MCALIB_RNG_ANT :

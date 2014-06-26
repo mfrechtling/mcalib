@@ -80,7 +80,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(library_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libmca_la_LIBADD =
-am_libmca_la_OBJECTS = mcalib.lo
+am_libmca_la_OBJECTS = mcalib.lo lookup_table.lo
 libmca_la_OBJECTS = $(am_libmca_la_OBJECTS)
 libmca_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -222,12 +222,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libmca.la
-libmca_la_SOURCES = mcalib.c
-EXTRA_DIST = mcalib.h mcalib_types.h
+libmca_la_SOURCES = mcalib.c lookup_table.c
+EXTRA_DIST = mcalib.h mcalib_types.h lookup_table.h
 MCA_LIBRARY_VERSION = 0:0:0
 libmca_la_LDFLAGS = -version-info $(MCA_LIBRARY_VERSION) -lgsl -lm
 library_includedir = $(includedir)/
-library_include_HEADERS = mcalib.h mcalib_types.h
+library_include_HEADERS = mcalib.h mcalib_types.h lookup_table.h
 all: all-am
 
 .SUFFIXES:
@@ -302,6 +302,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lookup_table.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mcalib.Plo@am__quote@
 
 .c.o:

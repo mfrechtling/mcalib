@@ -20,7 +20,7 @@ mcalib_data* mcalib_new_data(void) {
 	mcalib_data *new_data = (mcalib_data*)malloc(sizeof(mcalib_data));
 	new_data->index = NULL;
 	new_data->ant = mcalib_new_antithetic();
-	new_data->qrng = gsl_qrng_alloc(gsl_qrng_sobol, 1);
+	new_data->qrng = gsl_qrng_alloc(gsl_qrng_sobol, 3);
 	return new_data;
 }
 
@@ -37,6 +37,7 @@ mcalib_antithetic* mcalib_new_antithetic(void) {
 	mcalib_antithetic *new_ant = (mcalib_antithetic*)malloc(sizeof(mcalib_antithetic));
 	new_ant->rand = (double*)malloc(2 * sizeof(double));
 	new_ant->index = 0;
+	return new_ant;
 }
 
 void mcalib_clear_list(mcalib_list *list) {
@@ -96,9 +97,22 @@ int mcalib_get_data(int rng_type, mcalib_list *list, mcalib_index *index, double
 			continue;
 		}
 		if (rng_type == 1) {
-			mcalib_atrand_get(curr_element->data->ant, rng);
+			mcalib_atrand_get(curr_element->data->ant, rng);		
 		} else {
-			gsl_qrng_get(curr_element->data->qrng, rng);
+			double temp_res[3];
+			gsl_qrng_get(curr_element->data->qrng, temp_res);
+			int check_val = (*curr_element->data->index->id & 0xf);
+			switch (check_val) {
+				case 0xa:
+					*rng = temp_res[0];
+					break;
+				case 0xb:
+					*rng = temp_res[1];
+					break;
+				case 0xc:
+					*rng = temp_res[2];
+					break;
+			}
 		}
 		mcalib_clear_index(index);
 		return 1;
@@ -107,9 +121,22 @@ int mcalib_get_data(int rng_type, mcalib_list *list, mcalib_index *index, double
 	new_data->index = index;
 	mcalib_add_data(list, new_data);
 	if (rng_type == 1) {
-		mcalib_atrand_get(new_data->ant, rng);
+		mcalib_atrand_get(&new_data->ant, rng);
 	} else {
-		gsl_qrng_get(new_data->qrng, rng);
+		double temp_res[3];
+		gsl_qrng_get(new_data->qrng, temp_res);
+		int check_val = (*new_data->index->id & 0xf);
+		switch (check_val) {
+			case 0xa:
+				*rng = temp_res[0];
+				break;
+			case 0xb:
+				*rng = temp_res[1];
+				break;
+			case 0xc:
+				*rng = temp_res[2];
+				break;
+		}
 	}
 	return 1;
 }
