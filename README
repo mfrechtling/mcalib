@@ -68,7 +68,7 @@ or its equivalent:
 	- libmpfr-dev
 
 Before installing MCALIB the C Intermediate Language (CIL) compiler cilly should
-be installed. MCALIB supports CIL up to v1.7.1, use subsequent versions will
+be installed. MCALIB supports CIL up to v1.7.1, using subsequent versions will
 cause build errors. The following steps should be used to install cilly for use
 with MCALIB:
 
