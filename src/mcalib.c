@@ -1,4 +1,4 @@
-// The Monte Carlo Arihmetic Library - A tool for automated rounding error
+//The Monte Carlo Arihmetic Library - A tool for automated rounding error
 // analysis of floating point software. Copyright (C) 2014 The Computer
 // Engineering Laboratory, The University of Sydney. Maintained by Michael
 // Frechtling:
@@ -29,6 +29,9 @@ int 	MCALIB_RNG_TYPE		= MCALIB_RNG_UNFM;
 int 	MCALIB_T		= 24;
 
 struct mcalib_list *MCALIB_LUT = NULL;
+struct mtwist *MCALIB_MTWIST	= NULL;
+
+double **SOBOL_VALS;
 
 /******************** MCA RANDOM FUNCTIONS ********************
 * The following functions are used to calculate the random
@@ -38,9 +41,8 @@ struct mcalib_list *MCALIB_LUT = NULL;
 
 double _mca_runf(void) {
 	while(1) {
-		double d_rand = ((double)rand() / (double)RAND_MAX);
+		double d_rand = ((double)randomMT(MCALIB_MTWIST) / (double)(4294967295));
 		if ((d_rand > 0.) & (d_rand < 1.0)) {
-			//printf("RAND, %d, %x, %.16e\n", 0, (id & 0xf), d_rand - 0.5);
 			return d_rand;
 		}
 	}
@@ -48,8 +50,7 @@ double _mca_runf(void) {
 
 double _mca_get_rand(mcalib_index *index) {
 	double ret;
-	mcalib_get_data(MCALIB_RNG_TYPE, MCALIB_LUT, index, &ret);
-//	printf("RAND, %d, %x, %.16e\n", 0, *index->id & 0xf, ret - 0.5);
+	mcalib_get_data(MCALIB_RNG_TYPE, MCALIB_LUT, index, &ret, MCALIB_MTWIST, SOBOL_VALS);
 	return ret;
 }
 
@@ -80,13 +81,14 @@ int _mca_inexact(mpfr_ptr a, mpfr_rnd_t rnd_mode, mcalib_index *index) {
 	mpfr_set_d(mpfr_zero, 0., rnd_mode);
 	int cmp = mpfr_cmp(a, mpfr_zero);
 	if (cmp == 0) {
-		mcalib_clear_index(index);
+		double temp = _mca_rand(index);
 		mpfr_clear(mpfr_rand);
 		mpfr_clear(mpfr_offset);
 		mpfr_clear(mpfr_zero);
 		return 0;
 	}
-	double d_rand = (_mca_rand(index) - 0.5);
+	double d_rand;
+	d_rand = (_mca_rand(index) - 0.5);
 	double d_offset = pow(2, e_a);
 	mpfr_set_d(mpfr_rand, d_rand, rnd_mode);
 	mpfr_set_d(mpfr_offset, d_offset, rnd_mode);
@@ -97,18 +99,24 @@ int _mca_inexact(mpfr_ptr a, mpfr_rnd_t rnd_mode, mcalib_index *index) {
 	mpfr_clear(mpfr_zero);
 }
 
-void _mca_init(void) {
+void _mca_init(int n, int d) {
 	struct timeval t1;
 	gettimeofday(&t1, NULL);
 	srand(t1.tv_usec * t1.tv_sec);
 	MCALIB_LUT = mcalib_new_list();
+	MCALIB_MTWIST = mcalib_new_mtwist();
+	//printf("N = %d\tD = %d\n", n, d);
+	SOBOL_VALS = sobol_points(1000*n, d, "dir_num");
 }
 
 void _mca_clear(void) {
+	//printf("%s\n", "PRINTING LUT");
+	//print_list(MCALIB_LUT);
 	mcalib_clear_list(MCALIB_LUT);
+	free(SOBOL_VALS);
 }
 
-void make_index(mcalib_index *index, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one) {
+void make_index(mcalib_index *index, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrb, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1) {
 	char location[128];
 	char buffer[10];
 	int temp = sprintf(buffer, "%d", line_number);
@@ -117,8 +125,11 @@ void make_index(mcalib_index *index, unsigned id, char *file_name, unsigned line
 	strcat(location, buffer);
 	strncpy(index->location, location, 128);
 	*index->id = id;
-	*index->addr_lvl_zero = addr_lvl_zero;
-	*index->addr_lvl_one = addr_lvl_one;
+	index->addr[0] = addra;
+	index->addr[1] = addrb;
+	index->addr[2] = addrc;
+	index->addr[3] = 0x0;
+	index->addr[4] = 0x0;
 }
 
 /******************** MCA ARITHMETIC FUNCTIONS ********************
@@ -128,7 +139,7 @@ void make_index(mcalib_index *index, unsigned id, char *file_name, unsigned line
 * to the original format for return
 *******************************************************************/
 
-float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_bin mpfr_op) {
+float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrb, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1, mpfr_bin mpfr_op) {
 	mpfr_t mpfr_a, mpfr_b, mpfr_r;
 	mpfr_prec_t prec = 24 + MCALIB_T;
 	mpfr_rnd_t rnd = MPFR_RNDN;
@@ -138,9 +149,9 @@ float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_nu
 	if (MCALIB_OP_TYPE != MCALIB_OP_RR) {
 		mcalib_index *index_a, *index_b;
 		index_a = mcalib_new_index();
-		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addra, addrb, addrc, addr_lvl_0, addr_lvl_1);
 		index_b = mcalib_new_index();
-		make_index(index_b, ((id << 4) + 0xb), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_b, ((id << 4) + 0xb), file_name, line_number, addra, addrb, addrc, addr_lvl_0, addr_lvl_1);
 		_mca_inexact(mpfr_a, rnd, index_a);
 		_mca_inexact(mpfr_b, rnd, index_b);
 	}
@@ -148,7 +159,7 @@ float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_nu
 	if (MCALIB_OP_TYPE != MCALIB_OP_PB) {
 		mcalib_index *index_r;
 		index_r = mcalib_new_index();
-		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addra, addrb, addrc, addr_lvl_0, addr_lvl_1);
 		_mca_inexact(mpfr_r, rnd, index_r);
 	}
 	float ret = mpfr_get_flt(mpfr_r, rnd);
@@ -158,7 +169,7 @@ float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_nu
 	return NEAREST_FLOAT(ret);
 }
 
-float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_unr mpfr_op) {
+float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1, mpfr_unr mpfr_op) {
 	mpfr_t mpfr_a, mpfr_r;
 	mpfr_prec_t prec = 24 + MCALIB_T;
 	mpfr_rnd_t rnd = MPFR_RNDN;
@@ -167,14 +178,14 @@ float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, uns
 	if (MCALIB_OP_TYPE != MCALIB_OP_RR) {
 		mcalib_index *index_a;
 		index_a = mcalib_new_index();
-		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addra, 0x0, addrc, addr_lvl_0, addr_lvl_1);
 		_mca_inexact(mpfr_a, rnd, index_a);
 	}
 	mpfr_op(mpfr_r, mpfr_a, rnd);
 	if (MCALIB_OP_TYPE != MCALIB_OP_PB) {
 		mcalib_index *index_r;
 		index_r = mcalib_new_index();
-		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addra, 0x0, addrc, addr_lvl_0, addr_lvl_1);
 		_mca_inexact(mpfr_r, rnd, index_r);
 	}
 	float ret = mpfr_get_flt(mpfr_r, rnd);
@@ -183,7 +194,7 @@ float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, uns
 	return NEAREST_FLOAT(ret);
 }
 
-double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_bin mpfr_op) {
+double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrb, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1, mpfr_bin mpfr_op) {
 	mpfr_t mpfr_a, mpfr_b, mpfr_r;
 	mpfr_prec_t prec = 53 + MCALIB_T;
 	mpfr_rnd_t rnd = MPFR_RNDN;
@@ -193,17 +204,18 @@ double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line
 	if (MCALIB_OP_TYPE != MCALIB_OP_RR) {
 		mcalib_index *index_a, *index_b;
 		index_a = mcalib_new_index();
-		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addra, addrb, addrc, addr_lvl_0, addr_lvl_1);
 		index_b = mcalib_new_index();
-		make_index(index_b, ((id << 4) + 0xb), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_b, ((id << 4) + 0xb), file_name, line_number, addra, addrb, addrc, addr_lvl_0, addr_lvl_1);
 		_mca_inexact(mpfr_a, rnd, index_a);
 		_mca_inexact(mpfr_b, rnd, index_b);
 	}
 	mpfr_op(mpfr_r, mpfr_a, mpfr_b, rnd);
+	//mpfr_printf("%.16Rf\n", mpfr_r);
 	if (MCALIB_OP_TYPE != MCALIB_OP_PB) {
 		mcalib_index *index_r;
 		index_r = mcalib_new_index();
-		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addra, addrb, addrc, addr_lvl_0, addr_lvl_1);
 		_mca_inexact(mpfr_r, rnd, index_r);
 	}
 	double ret = mpfr_get_d(mpfr_r, rnd);
@@ -213,7 +225,7 @@ double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line
 	return NEAREST_DOUBLE(ret);
 }
 
-double _mca_dunr(double a, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_unr mpfr_op) {
+double _mca_dunr(double a, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1, mpfr_unr mpfr_op) {
 	mpfr_t mpfr_a, mpfr_r;
 	mpfr_prec_t prec = 53 + MCALIB_T;
 	mpfr_rnd_t rnd = MPFR_RNDN;
@@ -222,14 +234,14 @@ double _mca_dunr(double a, unsigned id, char *file_name, unsigned line_number, u
 	if (MCALIB_OP_TYPE != MCALIB_OP_RR) {
 		mcalib_index *index_a;
 		index_a = mcalib_new_index();
-		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_a, ((id << 4) + 0xa), file_name, line_number, addra, 0x0, addrc, addr_lvl_0, addr_lvl_1);
 		_mca_inexact(mpfr_a, rnd, index_a);
 	}
 	mpfr_op(mpfr_r, mpfr_a, rnd);
 	if (MCALIB_OP_TYPE != MCALIB_OP_PB) {
 		mcalib_index *index_r;
 		index_r = mcalib_new_index();
-		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addr_lvl_zero, addr_lvl_one);
+		make_index(index_r, ((id << 4) + 0xc), file_name, line_number, addra, 0x0, addrc, addr_lvl_0, addr_lvl_1);
 		_mca_inexact(mpfr_r, rnd, index_r);
 	}
 	double ret = mpfr_get_d(mpfr_r, rnd);
@@ -376,52 +388,52 @@ int _longge(long double a, long double b, unsigned id, char *file_name, unsigned
 
 float _floatadd(float a, float b, unsigned id, char *file_name, unsigned line_number) {
 	//return a + bi
-	return _mca_sbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_ADD);
+	return _mca_sbin(a, b, id, file_name, line_number, (unsigned)&a, (unsigned)&b, 0x0, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_bin)MP_ADD);
 }
 
 float _floatsub(float a, float b, unsigned id, char *file_name, unsigned line_number) {
 	//return a - b
-	return _mca_sbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_SUB);
+	return _mca_sbin(a, b, id, file_name, line_number, (unsigned)&a, (unsigned)&b, 0x0, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_bin)MP_SUB);
 }
 
 float _floatmul(float a, float b, unsigned id, char *file_name, unsigned line_number) {
 	//return a * b
-	return _mca_sbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_MUL);
+	return _mca_sbin(a, b, id, file_name, line_number, (unsigned)&a, (unsigned)&b, 0x0, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_bin)MP_MUL);
 }
 
 float _floatdiv(float a, float b, unsigned id, char *file_name, unsigned line_number) {
 	//return a / b
-	return _mca_sbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_DIV);
+	return _mca_sbin(a, b, id, file_name, line_number, (unsigned)&a, (unsigned)&b, 0x0, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_bin)MP_DIV);
 }
 
 float _floatneg(float a, unsigned id, char *file_name, unsigned line_number) {
 	//return -a
-	return _mca_sunr(a, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_unr)MP_NEG);
+	return _mca_sunr(a, id, file_name, line_number, (unsigned)a, 0x0, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_unr)MP_NEG);
 }
 
-double _doubleadd(double a, double b, unsigned id, char *file_name, unsigned line_number) {
+void _doubleadd(double *a, double *b, double *c, unsigned id, char *file_name, unsigned line_number) {
 	//return a + b
-	return _mca_dbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_ADD);
+	*c = _mca_dbin(*a, *b, id, file_name, line_number, (unsigned)a, (unsigned)b, (unsigned)c, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_bin)MP_ADD);
 }
 
-double _doublesub(double a, double b, unsigned id, char *file_name, unsigned line_number) {
+void _doublesub(double *a, double *b, double *c, unsigned id, char *file_name, unsigned line_number) {
 	//return a - b
-	return _mca_dbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_SUB);
+	*c = _mca_dbin(*a, *b, id, file_name, line_number, (unsigned)a, (unsigned)b, (unsigned)c, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_bin)MP_SUB);
 }
 
-double _doublemul(double a, double b, unsigned id, char *file_name, unsigned line_number) {
+void _doublemul(double *a, double *b, double *c, unsigned id, char *file_name, unsigned line_number) {
 	//return a * b
-	return _mca_dbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_MUL);
+	*c = _mca_dbin(*a, *b, id, file_name, line_number, (unsigned)a, (unsigned)b, (unsigned)c, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_bin)MP_MUL);
 }
 
-double _doublediv(double a, double b, unsigned id, char *file_name, unsigned line_number) {
+void _doublediv(double *a, double *b, double *c, unsigned id, char *file_name, unsigned line_number) {
 	//return a / b
-	return _mca_dbin(a, b, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_bin)MP_DIV);
+	*c = _mca_dbin(*a, *b, id, file_name, line_number, (unsigned)a, (unsigned)b, (unsigned)c, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_bin)MP_DIV);
 }
 
-double _doubleneg(double a, unsigned id, char *file_name, unsigned line_number) {
+void _doubleneg(double *a, double *c, unsigned id, char *file_name, unsigned line_number) {
 	//return -a
-	return _mca_dunr(a, id, file_name, line_number, (unsigned long int)(__builtin_return_address(0)), (unsigned long int)(__builtin_return_address(1)), (mpfr_unr)MP_NEG);
+	*c = _mca_dunr(*a, id, file_name, line_number, (unsigned)a, (unsigned)c, (unsigned)(__builtin_return_address(0)), (unsigned)(__builtin_return_address(1)), (mpfr_unr)MP_NEG);
 }
 
 long double _longadd(long double a, long double b, unsigned id, char *file_name, unsigned line_number) {

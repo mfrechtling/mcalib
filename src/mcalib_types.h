@@ -28,6 +28,7 @@
 #include "string.h"
 #include "gsl/gsl_qrng.h"
 #include "lookup_table.h"
+#include "mtwist.h"
 
 #define MCALIB_OP_IEEE 	0
 #define MCALIB_OP_MCA 	1
@@ -47,10 +48,10 @@
 typedef int (*mpfr_bin)(mpfr_t, mpfr_t, mpfr_t, mpfr_rnd_t);
 typedef int (*mpfr_unr)(mpfr_t, mpfr_t, mpfr_rnd_t);
 
-extern float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_bin mpfr_op);
-extern float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_unr mpfr_op);
+extern float _mca_sbin(float a, float b, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrb, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1, mpfr_bin mpfr_op);
+extern float _mca_sunr(float a, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1, mpfr_unr mpfr_op);
 extern int _mca_scmp(float a, float b);
-extern double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_bin mpfr_op);
-extern double _mca_dunr(double a, unsigned id, char *file_name, unsigned line_number, unsigned long int addr_lvl_zero, unsigned long int addr_lvl_one, mpfr_unr mpfr_op);
+extern double _mca_dbin(double a, double b, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrb, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1, mpfr_bin mpfr_op);
+extern double _mca_dunr(double a, unsigned id, char *file_name, unsigned line_number, unsigned addra, unsigned addrc, unsigned addr_lvl_0, unsigned addr_lvl_1, mpfr_unr mpfr_op);
 extern int _mca_dcmp(double a, double b);
 #endif

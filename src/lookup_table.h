@@ -3,12 +3,15 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "gsl/gsl_qrng.h"
+#include "mtwist.h"
 
 typedef struct mcalib_list 		mcalib_list;
 typedef struct mcalib_list_element	mcalib_list_element;
 typedef struct mcalib_data		mcalib_data;
 typedef struct mcalib_index		mcalib_index;
 typedef struct mcalib_antithetic	mcalib_antithetic;
+typedef struct mcalib_sobol		mcalib_sobol;
+extern int master_index;
 
 struct mcalib_list {
 	mcalib_list_element	*hp;
@@ -24,19 +27,20 @@ struct mcalib_list_element {
 struct mcalib_data {
 	mcalib_index		*index;
 	mcalib_antithetic	*ant;
-	gsl_qrng		*qrng;
+	int			*n;
+	int			*d;
 };
 
 struct mcalib_index {
 	unsigned		*id;
 	char			*location;
-	unsigned long int	*addr_lvl_zero;
-	unsigned long int	*addr_lvl_one;
+	unsigned		*addr;
+	unsigned		*master_index_val;
 };
 
 struct mcalib_antithetic {
-	double *rand;
-	int index;
+	double 			*rand;
+	int 			*index;
 };
 
 mcalib_list* mcalib_new_list(void);
@@ -49,9 +53,10 @@ void mcalib_clear_element(mcalib_list_element *element);
 void mcalib_clear_data(mcalib_data *data);
 void mcalib_clear_index(mcalib_index *index);
 void mcalib_clear_antithetic(mcalib_antithetic *ant);
-int mcalib_get_data(int rng_type, mcalib_list *list, mcalib_index *index, double *rng);
-void mcalib_atrand_get(mcalib_antithetic *ant, double *ret);
+int mcalib_get_data(int rng_type, mcalib_list *list, mcalib_index *index, double *rng, mtwist *MCALIB_MTWIST, double **SOBOL);
+void mcalib_atrand_get(mcalib_antithetic *ant, double *ret, mtwist *MCALIB_MTWIST);
 int mcalib_add_data(mcalib_list *list, mcalib_data *new_data);
-double mcalib_runf(void);
+double mcalib_runf(mtwist *MCALIB_MTWIST);
 void print_list(mcalib_list *list);
+void mcalib_sobol_get(mcalib_sobol *sobol, double *rng, unsigned check_val, int master_index_val);
 #endif

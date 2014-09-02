@@ -40,7 +40,7 @@ extern int MCALIB_OP_TYPE;
 extern int MCALIB_RNG_TYPE;
 extern int MCALIB_T;
 
-extern void _mca_init(void);
+extern void _mca_init(int n, int d);
 extern void _mca_clear(void);
 
 extern int _floateq(float a, float b, unsigned id, char *file_name, unsigned line_number);
@@ -70,11 +70,11 @@ extern float _floatmul(float a, float b, unsigned id, char *file_name, unsigned 
 extern float _floatdiv(float a, float b, unsigned id, char *file_name, unsigned line_number);
 extern float _floatneg(float a, unsigned id, char *file_name, unsigned line_number);
 
-extern double _doubleadd(double a, double b, unsigned id, char *file_name, unsigned line_number);
-extern double _doublesub(double a, double b, unsigned id, char *file_name, unsigned line_number);
-extern double _doublemul(double a, double b, unsigned id, char *file_name, unsigned line_number);
-extern double _doublediv(double a, double b, unsigned id, char *file_name, unsigned line_number);
-extern double _doubleneg(double a, unsigned id, char *file_name, unsigned line_number);
+extern void _doubleadd(double *a, double *b, double *c, unsigned id, char *file_name, unsigned line_number);
+extern void _doublesub(double *a, double *b, double *c, unsigned id, char *file_name, unsigned line_number);
+extern void _doublemul(double *a, double *b, double *c, unsigned id, char *file_name, unsigned line_number);
+extern void _doublediv(double *a, double *b, double *c, unsigned id, char *file_name, unsigned line_number);
+extern void _doubleneg(double *a, double *c, unsigned id, char *file_name, unsigned line_number);
 
 extern long double _longadd(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
 extern long double _longsub(long double a, long double b, unsigned id, char *file_name, unsigned line_number);
