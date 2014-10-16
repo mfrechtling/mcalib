@@ -1,18 +1,17 @@
-This is mcalib.info, produced by makeinfo version 4.13 from mcalib.texi.
+This is mcalib.info, produced by makeinfo version 5.2 from mcalib.texi.
 
 This manual documents the installation and use of MCALIB, (version
 1.0.1, May 2014).
 
-   Copyright (C) 2014 The Computer Engineering Laboratory, The
-University of Sydney.
+   Copyright © 2014 The Computer Engineering Laboratory, The University
+of Sydney.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
      Version 1.3 or any later version published by the Free Software
      Foundation; with no Invariant Sections, with no Front-Cover Texts,
-     and with no Back-Cover Texts.  A copy of the license is included
-     in the section entitled "GNU Free Documentation License".
-
+     and with no Back-Cover Texts.  A copy of the license is included in
+     the section entitled “GNU Free Documentation License”.
 INFO-DIR-SECTION Software libraries
 START-INFO-DIR-ENTRY
 * mcalib: (mcalib).                 Monte Carlo Arithmetic Library
@@ -24,19 +23,18 @@ File: mcalib.info,  Node: Top,  Next: Conditions,  Prev: (dir),  Up: (dir)
 MCALIB
 ******
 
-   This manual documents the installation and use of MCALIB, (version
+This manual documents the installation and use of MCALIB, (version
 1.0.1, May 2014).
 
-   Copyright (C) 2014 The Computer Engineering Laboratory, The
-University of Sydney.
+   Copyright © 2014 The Computer Engineering Laboratory, The University
+of Sydney.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
      Version 1.3 or any later version published by the Free Software
      Foundation; with no Invariant Sections, with no Front-Cover Texts,
-     and with no Back-Cover Texts.  A copy of the license is included
-     in the section entitled "GNU Free Documentation License".
-
+     and with no Back-Cover Texts.  A copy of the license is included in
+     the section entitled “GNU Free Documentation License”.
 
 * Menu:
 
@@ -45,7 +43,7 @@ University of Sydney.
 * Installation::	Installation of MCALIB
 * Background::		MCA Background
 * MCALIB Interface::	MCALIB Interface
-* References::
+* References::	
 * License::		GNU Free Documentation License
 * Index::
 * Function Index::	Function and Type Index
@@ -57,19 +55,19 @@ MCALIB Conditions of Use
 ************************
 
 The Monte Carlo Arihmetic Library - A tool for automated rounding error
-analysis of floating point software. Copyright (C) 2014 The Computer
-Engineering Laboratory, The University of Sydney. Maintained by Michael
+analysis of floating point software.  Copyright (C) 2014 The Computer
+Engineering Laboratory, The University of Sydney.  Maintained by Michael
 Frechtling, (michael.frechtling@sydney.edu.au).
 
    This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at
-your option) any later version.
+it under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
 
    This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.
 
    You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -81,39 +79,39 @@ File: mcalib.info,  Node: Introduction,  Next: Installation,  Prev: Conditions, 
 ************************
 
 Run-time analysis provides an effective method for measuring the
-sensitivity of programs to rounding errors. To date, implementations
+sensitivity of programs to rounding errors.  To date, implementations
 have required significant changes to source code, detracting from their
-widespread application. In this work we present a system that automates
-the quantitative analysis of floating point rounding errors, through
-the use of C-based source-to-source compilation and a Monte Carlo
-Arithmetic library.
+widespread application.  In this work we present a system that automates
+the quantitative analysis of floating point rounding errors, through the
+use of C-based source-to-source compilation and a Monte Carlo Arithmetic
+library.
 
    Monte Carlo Arithmetic (MCA) tracks rounding errors at run-time by
 applying randomization to input and output operands forcing the results
-of FP operations to behave like random variables. This turns an
-execution into trials of a Monte Carlo simulation allowing statistics
-on the effects of rounding error to be obtained over a number of
-executions. Statistical measurements are then used to analyse the
+of FP operations to behave like random variables.  This turns an
+execution into trials of a Monte Carlo simulation allowing statistics on
+the effects of rounding error to be obtained over a number of
+executions.  Statistical measurements are then used to analyse the
 results, sensitivity to rounding error is suspected if a high level of
-variance is observed between trials. As an example, consider the
+variance is observed between trials.  As an example, consider the
 subtraction 11111113 - 11111111 in decimal arithmetic using 8
-significant digits. In standard arithmetic, the answer is 2.0000000 and
-7 digits of significance are lost due to cancellation. With MCA, the
+significant digits.  In standard arithmetic, the answer is 2.0000000 and
+7 digits of significance are lost due to cancellation.  With MCA, the
 answer for a particular trial is 2.xxxxxxx where the x’s are random
-digits. Only the most significant digit will be unchanged over a number
-of trials and so a large standard deviation will result. Despite the
+digits.  Only the most significant digit will be unchanged over a number
+of trials and so a large standard deviation will result.  Despite the
 advantages offered by MCA and similar techniques, tools for rounding
-error analysis are not in common usage. It is believed that one of the
+error analysis are not in common usage.  It is believed that one of the
 major barriers is that source code needs to be modified so that custom
-libraries are called to execute the arithmetic operations. In this
+libraries are called to execute the arithmetic operations.  In this
 work, the use of source to source compilation, supported by mixed
-precision libraries, is advocated. The approach allows for the
-implementation of a general purpose FP analysis tool that can be
-applied to arbitrary programs without significant changes to the source
-code. The implementation provides opportunities for wider adoption of
-runtime error analysis, and allows developers to test both the accuracy
-of algorithms and the suitability of different FP formats for a
-particular implementation.
+precision libraries, is advocated.  The approach allows for the
+implementation of a general purpose FP analysis tool that can be applied
+to arbitrary programs without significant changes to the source code.
+The implementation provides opportunities for wider adoption of runtime
+error analysis, and allows developers to test both the accuracy of
+algorithms and the suitability of different FP formats for a particular
+implementation.
 
 
 File: mcalib.info,  Node: Installation,  Next: Background,  Prev: Introduction,  Up: Top
@@ -121,11 +119,11 @@ File: mcalib.info,  Node: Installation,  Next: Background,  Prev: Introduction, 
 2 Installation of MCALIB
 ************************
 
-The following section provides details on the installation of the
-MCALIB shared libary and the cilly source to source compiler. The guide
+The following section provides details on the installation of the MCALIB
+shared libary and the cilly source to source compiler.  The guide
 presented is intended as a quick start guide and full details on the
-installation process can be found in the `INSTALL' file supplied with
-the pacakge. Details on the use of MCALIB with source to source
+installation process can be found in the ‘INSTALL’ file supplied with
+the pacakge.  Details on the use of MCALIB with source to source
 compilation are provided in *note MCALIB Interface::.
 
 2.1 Installation Pre-requisites
@@ -135,58 +133,51 @@ compilation are provided in *note MCALIB Interface::.
 -----------------------
 
 The following packages should be installed before commencing with
-installation, these pacakges may be installed using `apt-get install'
-in debian derivatives or it's equivalent in other systems.
+installation, these pacakges may be installed using ‘apt-get install’ in
+debian derivatives or it’s equivalent in other systems.
 
-   * `make'
-
-   * `m4'
-
-   * `automake'
-
-   * `texinfo'
-
-   * `ocaml'
-
-   * `ocaml-findlib'
-
-   * `libmpfr-dev'
+   • ‘make’
+   • ‘m4’
+   • ‘automake’
+   • ‘texinfo’
+   • ‘ocaml’
+   • ‘ocaml-findlib’
+   • ‘libmpfr-dev’
 
 2.1.2 CIL
 ---------
 
 In order to automatically translate floating point operations to calls
 to MCALIB functions source to source compilation CIL, (the C
-Intermediate Language), is used. This requires the installation of the
-`cilly' compiler configured with the `fphooks.ml' and `fpsimplify.ml'
+Intermediate Language), is used.  This requires the installation of the
+‘cilly’ compiler configured with the ‘fphooks.ml’ and ‘fpsimplify.ml’
 extensions provided as part of MCALIB. The CIL source is available from
-`http://sourceforge.net/projects/cil/files/cil/cil-1.7.1.tar.gz/download'
+<http://sourceforge.net/projects/cil/files/cil/cil-1.7.1.tar.gz/download>
 and documentation including full installation instructions is available
-from `http://www.cs.berkeley.edu/~necula/cil/'. Please note that MCALIB
+from <http://www.cs.berkeley.edu/~necula/cil/>.  Please note that MCALIB
 only supports CIL up to version 1.7.1, versions 1.7.2 onwards are not
 supported and attempting installation using these versions will result
-in a build error. For the purposes of MCALIB installation should be
+in a build error.  For the purposes of MCALIB installation should be
 performed according to the following instructions:
 
   1. Download the source from the location given above and extract.
-     Copy the extension modules `fphooks.ml' and `fpsimplify.ml'
-     provided in the MCALIB pacakge in `/.../mcalib-1.0.1/cil_ext' to
-     the CIL extension directory `/.../cil-1.7.1/src/ext' and install
+     Copy the extension modules ‘fphooks.ml’ and ‘fpsimplify.ml’
+     provided in the MCALIB pacakge in ‘/.../mcalib-1.0.1/cil_ext’ to
+     the CIL extension directory ‘/.../cil-1.7.1/src/ext’ and install
      using the following commands
 
-  2. `./configure EXTRAFEATURES=`fpsimplify fphooks''
+  2. ‘./configure EXTRAFEATURES=`fpsimplify fphooks'’
 
-     Configure the CIL installation for your system including the
-     MCALIB extension modules.
+     Configure the CIL installation for your system including the MCALIB
+     extension modules.
 
-  3. `make'
+  3. ‘make’
 
-     Build the CIL compiler `cilly'
+     Build the CIL compiler ‘cilly’
 
-  4. `make install'
+  4. ‘make install’
 
      Install the CIL compiler
-
 
 2.2 MCALIB Installation
 =======================
@@ -194,32 +185,31 @@ performed according to the following instructions:
 Having ensured all pre-requisite libraries are installed MCALIB may be
 installed using the following commands
 
-  1. `./configure'
+  1. ‘./configure’
 
      Configure the MCALIB installation for your system
 
-  2. `make'
+  2. ‘make’
 
-     Build the MCALIB shared library `libmca.a'
+     Build the MCALIB shared library ‘libmca.a’
 
-  3. `make check'
+  3. ‘make check’
 
      Optional step to perform tests of the built libary to ensure
      correctness.  Testing is performed using the test suite suppled in
-     `/.../mcalib-2.0.0/tests/'. Failed tests should be reported to
-     Michael Frechtling, (<michael.frechtling@sydney.edu.au>). Please
-     include the file `config.log' in your bug report.
+     ‘/.../mcalib-2.0.0/tests/’.  Failed tests should be reported to
+     Michael Frechtling, (<michael.frechtling@sydney.edu.au>).  Please
+     include the file ‘config.log’ in your bug report.
 
-  4. `make install'
+  4. ‘make install’
 
-     Install the shared library to `/usr/local/lib/' and the header
-     files `mcalib.h' and `mcalib_types.h' to `/usr/local/include'.
+     Install the shared library to ‘/usr/local/lib/’ and the header
+     files ‘mcalib.h’ and ‘mcalib_types.h’ to ‘/usr/local/include’.
 
-  5. `sudo ldconfig'
+  5. ‘sudo ldconfig’
 
-     Update links and cached used by the run-time linker allowing
-     access to MCALIB shared library.
-
+     Update links and cached used by the run-time linker allowing access
+     to MCALIB shared library.
 
 2.3 Alternate Build Targets
 ===========================
@@ -227,41 +217,40 @@ installed using the following commands
 The followig build targets are also available once the configuration
 step of the installation process has been completed.
 
-   * `make clean'
+   • ‘make clean’
 
      Remove working files from the build directory, (removes oject and
      archive files, but not configuration files).
 
-   * `make distclean'
+   • ‘make distclean’
 
      Remove working files from the build directory, including
      configuration files.
 
-   * `make dvi' 
+   • ‘make dvi’
 
-     Create and/or update the `.dvi' version of this document.
+     Create and/or update the ‘.dvi’ version of this document.
 
-   * `make html' 
+   • ‘make html’
 
-     Create and/or update the `.html' version of this document.
+     Create and/or update the ‘.html’ version of this document.
 
-   * `make info' 
+   • ‘make info’
 
-     Create and/or update the `.info' version of this document.
+     Create and/or update the ‘.info’ version of this document.
 
-   * `make pdf' 
+   • ‘make pdf’
 
-     Create and/or update the `.pdf' version of this document.
+     Create and/or update the ‘.pdf’ version of this document.
 
-   * `make ps' 
+   • ‘make ps’
 
-     Create and/or update the `.ps' version of this document.
+     Create and/or update the ‘.ps’ version of this document.
 
-   * `make uninstall'
+   • ‘make uninstall’
 
-     Remove the shared libary from `/usr/local/lib' and header files
-     from `/usr/local/include'.
-
+     Remove the shared libary from ‘/usr/local/lib’ and header files
+     from ‘/usr/local/include’.
 
 
 File: mcalib.info,  Node: Background,  Next: MCALIB Interface,  Prev: Installation,  Up: Top
@@ -274,102 +263,103 @@ File: mcalib.info,  Node: Background,  Next: MCALIB Interface,  Prev: Installati
 
 MCA is designed to track information lost using finite precision
 arithmetic by modeling inexactness using the application of random
-perturbations. If x is a non-zero FP value of the form is a non-zero FP
+perturbations.  If x is a non-zero FP value of the form is a non-zero FP
 value of the form x = (-1)^s m 2^e the inexact function is defined as:
 
-       inexact(x, t, \xi) = (-1)^\s_x\(m_x + 2^\-t\ \xi)2^\e_x\
+    inexact(x, t, \xi) = (-1)^\{s_x\}(m_x + 2^\{-t\} \xi)2^\{e_x\}
+
    where x \in R, x \neq 0, t is a positive integer representing the
-virtual precision, \xi is a uniformly distributed random variable in
-the range (-1/2, 1/2), (\xi \in U (−1/2, 1/2)) and m_x, e_x are the
-significand and exponent of x. It is assumed that 0 < t \leq p. An
-operation \circ \in \+, −, \times, \div\ is implemented as:
+virtual precision, \xi is a uniformly distributed random variable in the
+range (-1/2, 1/2), (\xi \in U (−1/2, 1/2)) and m_x, e_x are the
+significand and exponent of x.  It is assumed that 0 < t \leq p.  An
+operation \circ \in \{+, −, \times, \div\} is implemented as:
 
         x \circ y = round(inexact(inexact(x) \circ inexact(y)))
-   This results in the inexact() function being applied to both
-operands and the final result. Adjustments to the operands are referred
-to as precision bounding and are used to detect catastrophic
-cancellation, while adjustments to the final result are referred to as
-random rounding and are used to detect rounding error. MCALIB performs
-both precision bounding and random rounding by first applying a random
-perturbation to each input operand, performing the required operation,
-then applying a random perturbation to the result. The inexact()
-function as implemented for MCALIB applies random perturbations using
-uniform absolute random values. Values for \xi are uniformly
-distributed over (−1/2, 1/2) with mean 0 and standard deviation
-1/\sqrt\12\. If x is a random variable, then inexact(x) has a mean
-E[x], (expected value of x), and a standard deviation of \sqrt\S[x]^2 +
-2^\2(e−t)\/12\, (where S[x] is the standard deviation of the input x).
-The virtual precision value t is used to control the level of random
-perturbation applied during MCA.  This, in turn, controls the accuracy
-of the Monte Carlo operations. A large t value will result in a smaller
-exponent value for the operand perturbation, increasing the accuracy of
-the operation. Similarly, a smaller t decreases the accuracy. In
-practice, t is used to determine the minimum precision required to
-perform specific operation accurately. The precision is set to its
-lowest value then repeated computations are performed as the precision
-is increased. When the required number of significant figures of the
-result have stabilized (i.e the required accuracy has been achieved) the
-minimum FP precision required to perform the operation accurately using
-standard IEEE-754 FP operators is determined. The implementation
-developed for this paper thus performs variable precision MCA, and the
-value of t used by the MCA library can be modified at any time during
-execution.
+
+   This results in the inexact() function being applied to both operands
+and the final result.  Adjustments to the operands are referred to as
+precision bounding and are used to detect catastrophic cancellation,
+while adjustments to the final result are referred to as random rounding
+and are used to detect rounding error.  MCALIB performs both precision
+bounding and random rounding by first applying a random perturbation to
+each input operand, performing the required operation, then applying a
+random perturbation to the result.  The inexact() function as
+implemented for MCALIB applies random perturbations using uniform
+absolute random values.  Values for \xi are uniformly distributed over
+(−1/2, 1/2) with mean 0 and standard deviation 1/\sqrt\{12\}.  If x is a
+random variable, then inexact(x) has a mean E[x], (expected value of x),
+and a standard deviation of \sqrt\{S[x]^2 + 2^\{2(e−t)\}/12\}, (where
+S[x] is the standard deviation of the input x).  The virtual precision
+value t is used to control the level of random perturbation applied
+during MCA. This, in turn, controls the accuracy of the Monte Carlo
+operations.  A large t value will result in a smaller exponent value for
+the operand perturbation, increasing the accuracy of the operation.
+Similarly, a smaller t decreases the accuracy.  In practice, t is used
+to determine the minimum precision required to perform specific
+operation accurately.  The precision is set to its lowest value then
+repeated computations are performed as the precision is increased.  When
+the required number of significant figures of the result have stabilized
+(i.e the required accuracy has been achieved) the minimum FP precision
+required to perform the operation accurately using standard IEEE-754 FP
+operators is determined.  The implementation developed for this paper
+thus performs variable precision MCA, and the value of t used by the MCA
+library can be modified at any time during execution.
 
 3.2 Source to Source Compilation
 ================================
 
 Source to source compilation provides an effective tool for automated
 code transformations, and when paired with error analysis techniques
-allows for the implementation of automated SW verification. The C
+allows for the implementation of automated SW verification.  The C
 Intermediate Language (CIL) is a high level language representation
 including a set of tools for analysis and source to source compilation
-of C programs. The CIL compiler cilly is implemented as a Perl script
+of C programs.  The CIL compiler cilly is implemented as a Perl script
 that performs translations to C code as defined in a set of OCaml
-modules provided as part of the CIL library. For the purposes of MCALIB
+modules provided as part of the CIL library.  For the purposes of MCALIB
 CIL has been used for transforming C FP operations into calls to the
-MCALIB library. This has been done by first lowering the source code to
-a single statement assignment form, then converting FP operations to
-use MCALIB library functions. As an example the following single
-precision multiplication operation:
+MCALIB library.  This has been done by first lowering the source code to
+a single statement assignment form, then converting FP operations to use
+MCALIB library functions.  As an example the following single precision
+multiplication operation:
 
-   `a = b * c;'
+   ‘a = b * c;’
 
    would be redefined to the following function call:
 
-   `a = _floatmul(b, c);'
+   ‘a = _floatmul(b, c);’
 
-   where `float _floatmul(float a, float b)' is the MCALIB function for
-handling single precision MCA multiplication. This process will result
-in all supported FP operations being replaced with function calls to
-the MCALIB library. It is important to note that although operations
-are done in a higher precision, the storage requirements of the FP
-variables remain unchanged. This avoids portability issues associated
-with pointers and dynamic memory allocation.
+   where ‘float _floatmul(float a, float b)’ is the MCALIB function for
+handling single precision MCA multiplication.  This process will result
+in all supported FP operations being replaced with function calls to the
+MCALIB library.  It is important to note that although operations are
+done in a higher precision, the storage requirements of the FP variables
+remain unchanged.  This avoids portability issues associated with
+pointers and dynamic memory allocation.
 
 3.3 Mixed Precision Implementation using MPFR
 =============================================
 
 MCA has been implemented within MCALIB as a set of library functions for
-arithmetic and comparison operations. One of the primary difficulties
+arithmetic and comparison operations.  One of the primary difficulties
 with implementing MCA is the need to extend the precision of the FP
-format being tested in order to simulate infinite precision. The
+format being tested in order to simulate infinite precision.  The
 precision level must include p machine bits and t virtual bits, a total
 precision requirement of W = p + t, where W is the working precision of
-the MCA operation. The MCALIB library also implements variable
+the MCA operation.  The MCALIB library also implements variable
 precision MCA, allowing the virtual precision to vary between 1 \leq t
-\leq p at runtime. To achieve this functionality the mixed precision
+\leq p at runtime.  To achieve this functionality the mixed precision
 library MPFR is used for mixed precision arithmetic in MCALIB.
 
    For MCA functions, FP values are converted to mpfr_t type variables.
 The mpfr_t type is a struct containing an arbitrary precision
-significand and a fixed precision exponent. The precision of the
+significand and a fixed precision exponent.  The precision of the
 significand of any MPFR variable may be set independently at runtime to
-any value between MPFR_PREC_MIN and `MPFR_PREC_MAX', i.e. 2 and 256
-respectively. For the purposes of MCALIB, the maximum precision
-required is W_max = p + t_max which evaluates to 106 when using double
-precision operators. Rounding in MPFR adheres to the C implementation
-of the IEEE-754 standard and the default rounding mode round to nearest
-even is used for MCALIB.
+any value between MPFR_PREC_MIN and ‘MPFR_PREC_MAX’, i.e.  2 and 256
+respectively.  For the purposes of MCALIB, the maximum precision
+required is W_{max} = p + t_{max} which evaluates to 106 when using
+double precision operators.  Rounding in MPFR adheres to the C
+implementation of the IEEE-754 standard and the default rounding mode
+round to nearest even is used for MCALIB.
 
    The function for implementing MCA for an individual operation is
 shown below:
@@ -387,8 +377,8 @@ shown below:
      }
 
    The FP operands are first converted to mpfr_t with precision W , and
-the result variable is initialized with the same precision. The random
-perturbation \xi  is applied to the input operands using the inexact
+the result variable is initialized with the same precision.  The random
+perturbation \xi is applied to the input operands using the inexact
 function as follows:
 
      mpfr_t _mca_inexact(mpfr_t x) {
@@ -404,7 +394,7 @@ function as follows:
      }
 
    The arithmetic operation is then performed using an MPFR operation,
-rounded to W bits. Random rounding is then applied to the result using
+rounded to W bits.  Random rounding is then applied to the result using
 the inexact function and the final result is then converted to its
 original format by rounding to p bits.
 
@@ -419,11 +409,11 @@ File: mcalib.info,  Node: MCALIB Interface,  Next: References,  Prev: Background
 
 Correct implemenation of MCA using MCALIB requies a small number of
 manual modifications to the original source code, namely, the MCALIB
-libary header should be inluded, MCA control parameters set to
-determine the behaivour of the MCA implemenation, and the C standard
-library random number generator, `rand()' should be correctly seeded.
-For the purposes of this section these modifications will be
-demonstrated on a sample arithmetic program implementing the Knuth Test:
+libary header should be inluded, MCA control parameters set to determine
+the behaivour of the MCA implemenation, and the C standard library
+random number generator, ‘rand()’ should be correctly seeded.  For the
+purposes of this section these modifications will be demonstrated on a
+sample arithmetic program implementing the Knuth Test:
 
      #include "stdlib.h"
      #include "stdio.h"
@@ -443,9 +433,9 @@ demonstrated on a sample arithmetic program implementing the Knuth Test:
          return 0;
      }
 
-   A completed version of the modified project along with a Makefile
-and the original un-modified source can be found in
-`/.../mcalib-2.0.0/demo/' and can be executed using the following
+   A completed version of the modified project along with a Makefile and
+the original un-modified source can be found in
+‘/.../mcalib-2.0.0/demo/’ and can be executed using the following
 commands:
 
      make clean; make
@@ -460,7 +450,7 @@ commands:
 -------------
 
 The first modification required is to add a delcaration including the
-MCALIB header file `mcalib.h'. All variable and function delcarations
+MCALIB header file ‘mcalib.h’.  All variable and function delcarations
 required for using MCALIB are performed in this file and it should be
 included in any project using MCALIB. Modifying the example project to
 include the MCALIB header file is shown below;
@@ -473,33 +463,32 @@ include the MCALIB header file is shown below;
 4.1.2 Control Parameters
 ------------------------
 
-Implementation of MCA is controlled using two parameters, `MCALIB_T'
-sets the value of the virtual precision, t, and `MCALIB_OP_TYPE'
-enables and disables MCA. Pre-defined symbols are declared in
-`mcalib.h' and can be used to control the implementation as follows;
+Implementation of MCA is controlled using two parameters, ‘MCALIB_T’
+sets the value of the virtual precision, t, and ‘MCALIB_OP_TYPE’ enables
+and disables MCA. Pre-defined symbols are declared in ‘mcalib.h’ and can
+be used to control the implementation as follows;
 
-   * `MCALIB_IEEE'
+   • ‘MCALIB_IEEE’
 
      Disable MCA functions and use standard floating point operators
 
-   * `MCALIB_MCA'
+   • ‘MCALIB_MCA’
 
      Enable MCA using both precision bounding, (inbound), and random
      rounding, (outbound).
 
-   * `MCALIB_PB'
+   • ‘MCALIB_PB’
 
      Enable MCA using precision bounding only.
 
-   * `MCALIB_RR'
+   • ‘MCALIB_RR’
 
      Enable MCA using random rounding only.
 
-
    Application of these control parameters to the worked example is
-shown below. In this case we are setting the virtual precision to 24 to
-test single precision performance and enabling the MCA functions for
-the function `knuth_test()' only.
+shown below.  In this case we are setting the virtual precision to 24 to
+test single precision performance and enabling the MCA functions for the
+function ‘knuth_test()’ only.
 
      int main(void) {
          MCALIB_T = 24;                      //Set the value of the MCA virtual precision
@@ -512,12 +501,12 @@ the function `knuth_test()' only.
 4.1.3 Seed for Random Number Generator
 --------------------------------------
 
-MCALIB utilizes the standard library function `rand()' to generate
-random numbers for using in the `inexact()' function. As such the
+MCALIB utilizes the standard library function ‘rand()’ to generate
+random numbers for using in the ‘inexact()’ function.  As such the
 random number generator should be correctly seeded in order to ensure
-correct implemenation of MCA functions. The function `void
-_mca_seed(void)' has been included as part of MCALIB for the purposes
-of seeding the standard library RNG and should be called before any
+correct implemenation of MCA functions.  The function ‘void
+_mca_seed(void)’ has been included as part of MCALIB for the purposes of
+seeding the standard library RNG and should be called before any
 floating point operators are used:
 
      int main(void) {
@@ -532,24 +521,23 @@ floating point operators are used:
 4.1.4 Using MCALIB with Source to Source Compilation
 ----------------------------------------------------
 
-At this stage the worked example is ready to be compiled with MCALIB.
-In order to access the MCALIB arithmetic functions to perform the
-floating point calculations two options are available. The floating
-point operations can be manually re-written using MCALIB arithmetic
-functions;
+At this stage the worked example is ready to be compiled with MCALIB. In
+order to access the MCALIB arithmetic functions to perform the floating
+point calculations two options are available.  The floating point
+operations can be manually re-written using MCALIB arithmetic functions;
 
      u = _doubleadd(_doubleadd(a, b), c);
      v = _doubleadd(a, _doubleadd(b, c));
 
    In this case the example can be compiled as normal, adding the option
-`-lmca' to the compile command to link the shared libary;
+‘-lmca’ to the compile command to link the shared libary;
 
      gcc knuth.c -o knuth -lm -lmca
 
    This process of re-writing floating point operations becomes tedious
 for anything beyond simple examples, for this reason with have included
 CIL extension modules that automatically re-write floating point
-operations using source-to-source compilation. To use this function,
+operations using source-to-source compilation.  To use this function,
 the original operations should be left unchanged;
 
      u = (a +  b) + c;
@@ -570,15 +558,11 @@ the original operations should be left unchanged;
      gcc -D_GNUCC -o knuth ./knuth.o -lm -lmca
 
    and the the original floating point operations being re-written as
-follows, (as can be seen in the temporary file `knuth.cil.c';
+follows, (as can be seen in the temporary file ‘knuth.cil.c’;
 
-     #line 14
          __cil_tmp6 = _doubleadd(a, b);
-     #line 14
          u = _doubleadd(__cil_tmp6, c);
-     #line 15
          __cil_tmp7 = _doubleadd(b, c);
-     #line 15
          v = _doubleadd(a, __cil_tmp7);
 
 4.2 Arithmetic Functions
@@ -589,56 +573,42 @@ MCALIB.
 
  -- Function: float _floatadd (float A, float B)
      Single precision addition operation
-
  -- Function: float _floatsub (float A, float B)
      Single precision subtraction operation
-
  -- Function: float _floatmul (float A, float B)
      Single precision multiplication operation
-
  -- Function: float _floatdiv (float A, float B)
      Single precision division operation
-
  -- Function: float _floatneg (float A, float B)
      Single precision negation operation
-
  -- Function: double _doubleadd (double A, double B)
      Double precision addition operation
-
  -- Function: double _doublesub (double A, double B)
      Double precision subtraction operation
-
  -- Function: double _doublemul (double A, double B)
      Double precision multiplication operation
-
  -- Function: double _doublediv (double A, double B)
      Double precision division operation
-
  -- Function: double _doubleneg (double A, double B)
      Double precision negation operation
-
  -- Function: long double _longadd (long double A, long double B)
-     Extended, (long double), precision addition operation. Does not
+     Extended, (long double), precision addition operation.  Does not
      implement MCA functionality, implements standard IEEE-754
      arithmetic.
-
  -- Function: long double _longsub (long double A, long double B)
-     Extended, (long double), precision subtraction operation. Does not
+     Extended, (long double), precision subtraction operation.  Does not
      implement MCA functionality, implements standard IEEE-754
      arithmetic.
-
  -- Function: long double _longmul (long double A, long double B)
-     Extended, (long double), precision multiplication operation. Does
+     Extended, (long double), precision multiplication operation.  Does
      not implement MCA functionality, implements standard IEEE-754
      arithmetic.
-
  -- Function: long double _longdiv (long double A, long double B)
-     Extended, (long double), precision division operation. Does not
+     Extended, (long double), precision division operation.  Does not
      implement MCA functionality, implements standard IEEE-754
      arithmetic.
-
  -- Function: long double _longneg (long double A, long double B)
-     Extended, (long double), precision negation operation. Does not
+     Extended, (long double), precision negation operation.  Does not
      implement MCA functionality, implements standard IEEE-754
      arithmetic.
 
@@ -650,56 +620,39 @@ MCALIB.
 
  -- Function: int _floateq (float A, float B)
      Single precision boolean equal operation
-
  -- Function: int _floatne (float A, float B)
      Single precision boolean not equal operation
-
  -- Function: int _floatlt (float A, float B)
      Single precision boolean less than operation
-
  -- Function: int _floatgt (float A, float B)
      Single precision boolean greater than operation
-
  -- Function: int _floatle (float A, float B)
      Single precision boolean less than or equal operation
-
  -- Function: int _floatge (float A, float B)
      Single precision boolean greater than or equal operation
-
  -- Function: int _doubleeq (double A, double B)
      Double precision boolean equal operation
-
  -- Function: int _doublene (double A, double B)
      Double precision boolean not equal operation
-
  -- Function: int _doublelt (double A, double B)
      Double precision boolean less than operation
-
  -- Function: int _doublegt (double A, double B)
      Double precision boolean greater than operation
-
  -- Function: int _doublele (double A, double B)
      Double precision boolean less than or equal operation
-
  -- Function: int _doublege (double A, double B)
      Double precision boolean greater than or equal operation
-
  -- Function: int _longeq (long double A, long double B)
      Extended, (long double), precision boolean equal operation.
-
  -- Function: int _longne (long double A, long double B)
      Extended, (long double), precision boolean not equal operation.
-
  -- Function: int _longlt (long double A, long double B)
      Extended, (long double), precision boolean less than operation.
-
  -- Function: int _longgt (long double A, long double B)
      Extended, (long double), precision boolean greater than operation.
-
  -- Function: int _longle (long double A, long double B)
      Extended, (long double), precision boolean less than or equal
      operation.
-
  -- Function: int _longge (long double A, long double B)
      Extended, (long double), precision boolean greater than or equal
      operation.
@@ -710,34 +663,32 @@ File: mcalib.info,  Node: References,  Next: License,  Prev: MCALIB Interface,  
 References
 **********
 
-   * Ian Foster, Stephen Taylor, A Compiler Approach to Scalable
-     Concurrent-Program Design. ACM Transactions on Programming
+   • Ian Foster, Stephen Taylor, A Compiler Approach to Scalable
+     Concurrent-Program Design.  ACM Transactions on Programming
      Languages and Systems (TOPLAS) 16, 3, 577-604, 1994.
 
-   * Laurent Fousse, Guillaume Hanrot, Vincent Lefèvre, Patrick
+   • Laurent Fousse, Guillaume Hanrot, Vincent Lefèvre, Patrick
      Pélissier and Paul Zimmermann, MPFR: A Multiple-Precision Binary
      Floating-Point Library With Correct Rounding, ACM Transactions on
      Mathematical Software, volume 33, issue 2, article 13, 15 pages,
-     2007, `http://doi.acm.org/10.1145/1236463.1236468'.
+     2007, <http://doi.acm.org/10.1145/1236463.1236468>.
 
-   * François Irigoin, Pierre Jouvelot, Rèmi Triolet, Semantical
+   • François Irigoin, Pierre Jouvelot, Rèmi Triolet, Semantical
      Interprocedural Parallelization: An Overview of the PIPS Project,
      Proceedings of the 5th International Conference on Supercomputing,
      ACM, 244-251, 1991.
 
-   * G. Necula, S. McPeak, S Rahul, W. Weimer, CIL: Intermediate
+   • G. Necula, S. McPeak, S Rahul, W. Weimer, CIL: Intermediate
      Language and Tools for Analysis and Transformation of C Programs,
      Compiler Construction, Springer, 209-265, 2002.
 
-   * Thi Viet Nga Nguyen, François Irigoin, Efficient and Effective
-     Array Bound Checking, ACM Transactions on Programming Languages
-     and Systems (TOPLAS), 27, 3, 527-570, 2005.
+   • Thi Viet Nga Nguyen, François Irigoin, Efficient and Effective
+     Array Bound Checking, ACM Transactions on Programming Languages and
+     Systems (TOPLAS), 27, 3, 527-570, 2005.
 
-   * Douglas Stott Parker, Monte Carlo Arithmetic: Exploiting
-     Randomness in Floating-Point Arithmetic, Computer Science
-     Department, UCLA, 1997,
-     `http://www.cs.ucla.edu/~stott/mca/CSD-970002.ps.gz'
-
+   • Douglas Stott Parker, Monte Carlo Arithmetic: Exploiting Randomness
+     in Floating-Point Arithmetic, Computer Science Department, UCLA,
+     1997, <http://www.cs.ucla.edu/~stott/mca/CSD-970002.ps.gz>
 
 
 File: mcalib.info,  Node: License,  Next: Index,  Prev: References,  Up: Top
@@ -747,7 +698,7 @@ Appendix A GNU Free Documentation License
 
                       Version 1.2, November 2002
 
-     Copyright (C) 2000,2001,2002 Free Software Foundation, Inc.
+     Copyright © 2000,2001,2002 Free Software Foundation, Inc.
      51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 
      Everyone is permitted to copy and distribute verbatim copies
@@ -763,7 +714,7 @@ Appendix A GNU Free Documentation License
      author and publisher a way to get credit for their work, while not
      being considered responsible for modifications made by others.
 
-     This License is a kind of "copyleft", which means that derivative
+     This License is a kind of “copyleft”, which means that derivative
      works of the document must themselves be free in the same sense.
      It complements the GNU General Public License, which is a copyleft
      license designed for free software.
@@ -773,29 +724,29 @@ Appendix A GNU Free Documentation License
      free program should come with manuals providing the same freedoms
      that the software does.  But this License is not limited to
      software manuals; it can be used for any textual work, regardless
-     of subject matter or whether it is published as a printed book.
-     We recommend this License principally for works whose purpose is
+     of subject matter or whether it is published as a printed book.  We
+     recommend this License principally for works whose purpose is
      instruction or reference.
 
   1. APPLICABILITY AND DEFINITIONS
 
      This License applies to any manual or other work, in any medium,
-     that contains a notice placed by the copyright holder saying it
-     can be distributed under the terms of this License.  Such a notice
+     that contains a notice placed by the copyright holder saying it can
+     be distributed under the terms of this License.  Such a notice
      grants a world-wide, royalty-free license, unlimited in duration,
      to use that work under the conditions stated herein.  The
-     "Document", below, refers to any such manual or work.  Any member
-     of the public is a licensee, and is addressed as "you".  You
-     accept the license if you copy, modify or distribute the work in a
-     way requiring permission under copyright law.
+     “Document”, below, refers to any such manual or work.  Any member
+     of the public is a licensee, and is addressed as “you”.  You accept
+     the license if you copy, modify or distribute the work in a way
+     requiring permission under copyright law.
 
-     A "Modified Version" of the Document means any work containing the
+     A “Modified Version” of the Document means any work containing the
      Document or a portion of it, either copied verbatim, or with
      modifications and/or translated into another language.
 
-     A "Secondary Section" is a named appendix or a front-matter section
+     A “Secondary Section” is a named appendix or a front-matter section
      of the Document that deals exclusively with the relationship of the
-     publishers or authors of the Document to the Document's overall
+     publishers or authors of the Document to the Document’s overall
      subject (or to related matters) and contains nothing that could
      fall directly within that overall subject.  (Thus, if the Document
      is in part a textbook of mathematics, a Secondary Section may not
@@ -804,59 +755,59 @@ Appendix A GNU Free Documentation License
      of legal, commercial, philosophical, ethical or political position
      regarding them.
 
-     The "Invariant Sections" are certain Secondary Sections whose
-     titles are designated, as being those of Invariant Sections, in
-     the notice that says that the Document is released under this
-     License.  If a section does not fit the above definition of
-     Secondary then it is not allowed to be designated as Invariant.
-     The Document may contain zero Invariant Sections.  If the Document
-     does not identify any Invariant Sections then there are none.
+     The “Invariant Sections” are certain Secondary Sections whose
+     titles are designated, as being those of Invariant Sections, in the
+     notice that says that the Document is released under this License.
+     If a section does not fit the above definition of Secondary then it
+     is not allowed to be designated as Invariant.  The Document may
+     contain zero Invariant Sections.  If the Document does not identify
+     any Invariant Sections then there are none.
 
-     The "Cover Texts" are certain short passages of text that are
+     The “Cover Texts” are certain short passages of text that are
      listed, as Front-Cover Texts or Back-Cover Texts, in the notice
      that says that the Document is released under this License.  A
      Front-Cover Text may be at most 5 words, and a Back-Cover Text may
      be at most 25 words.
 
-     A "Transparent" copy of the Document means a machine-readable copy,
+     A “Transparent” copy of the Document means a machine-readable copy,
      represented in a format whose specification is available to the
      general public, that is suitable for revising the document
-     straightforwardly with generic text editors or (for images
-     composed of pixels) generic paint programs or (for drawings) some
-     widely available drawing editor, and that is suitable for input to
-     text formatters or for automatic translation to a variety of
-     formats suitable for input to text formatters.  A copy made in an
-     otherwise Transparent file format whose markup, or absence of
-     markup, has been arranged to thwart or discourage subsequent
-     modification by readers is not Transparent.  An image format is
-     not Transparent if used for any substantial amount of text.  A
-     copy that is not "Transparent" is called "Opaque".
+     straightforwardly with generic text editors or (for images composed
+     of pixels) generic paint programs or (for drawings) some widely
+     available drawing editor, and that is suitable for input to text
+     formatters or for automatic translation to a variety of formats
+     suitable for input to text formatters.  A copy made in an otherwise
+     Transparent file format whose markup, or absence of markup, has
+     been arranged to thwart or discourage subsequent modification by
+     readers is not Transparent.  An image format is not Transparent if
+     used for any substantial amount of text.  A copy that is not
+     “Transparent” is called “Opaque”.
 
      Examples of suitable formats for Transparent copies include plain
      ASCII without markup, Texinfo input format, LaTeX input format,
-     SGML or XML using a publicly available DTD, and
-     standard-conforming simple HTML, PostScript or PDF designed for
-     human modification.  Examples of transparent image formats include
-     PNG, XCF and JPG.  Opaque formats include proprietary formats that
-     can be read and edited only by proprietary word processors, SGML or
-     XML for which the DTD and/or processing tools are not generally
-     available, and the machine-generated HTML, PostScript or PDF
-     produced by some word processors for output purposes only.
+     SGML or XML using a publicly available DTD, and standard-conforming
+     simple HTML, PostScript or PDF designed for human modification.
+     Examples of transparent image formats include PNG, XCF and JPG.
+     Opaque formats include proprietary formats that can be read and
+     edited only by proprietary word processors, SGML or XML for which
+     the DTD and/or processing tools are not generally available, and
+     the machine-generated HTML, PostScript or PDF produced by some word
+     processors for output purposes only.
 
-     The "Title Page" means, for a printed book, the title page itself,
+     The “Title Page” means, for a printed book, the title page itself,
      plus such following pages as are needed to hold, legibly, the
      material this License requires to appear in the title page.  For
-     works in formats which do not have any title page as such, "Title
-     Page" means the text near the most prominent appearance of the
-     work's title, preceding the beginning of the body of the text.
+     works in formats which do not have any title page as such, “Title
+     Page” means the text near the most prominent appearance of the
+     work’s title, preceding the beginning of the body of the text.
 
-     A section "Entitled XYZ" means a named subunit of the Document
+     A section “Entitled XYZ” means a named subunit of the Document
      whose title either is precisely XYZ or contains XYZ in parentheses
      following text that translates XYZ in another language.  (Here XYZ
      stands for a specific section name mentioned below, such as
-     "Acknowledgements", "Dedications", "Endorsements", or "History".)
-     To "Preserve the Title" of such a section when you modify the
-     Document means that it remains a section "Entitled XYZ" according
+     “Acknowledgements”, “Dedications”, “Endorsements”, or “History”.)
+     To “Preserve the Title” of such a section when you modify the
+     Document means that it remains a section “Entitled XYZ” according
      to this definition.
 
      The Document may include Warranty Disclaimers next to the notice
@@ -876,8 +827,8 @@ Appendix A GNU Free Documentation License
      may not use technical measures to obstruct or control the reading
      or further copying of the copies you make or distribute.  However,
      you may accept compensation in exchange for copies.  If you
-     distribute a large enough number of copies you must also follow
-     the conditions in section 3.
+     distribute a large enough number of copies you must also follow the
+     conditions in section 3.
 
      You may also lend copies, under the same conditions stated above,
      and you may publicly display copies.
@@ -886,17 +837,16 @@ Appendix A GNU Free Documentation License
 
      If you publish printed copies (or copies in media that commonly
      have printed covers) of the Document, numbering more than 100, and
-     the Document's license notice requires Cover Texts, you must
+     the Document’s license notice requires Cover Texts, you must
      enclose the copies in covers that carry, clearly and legibly, all
      these Cover Texts: Front-Cover Texts on the front cover, and
      Back-Cover Texts on the back cover.  Both covers must also clearly
      and legibly identify you as the publisher of these copies.  The
-     front cover must present the full title with all words of the
-     title equally prominent and visible.  You may add other material
-     on the covers in addition.  Copying with changes limited to the
-     covers, as long as they preserve the title of the Document and
-     satisfy these conditions, can be treated as verbatim copying in
-     other respects.
+     front cover must present the full title with all words of the title
+     equally prominent and visible.  You may add other material on the
+     covers in addition.  Copying with changes limited to the covers, as
+     long as they preserve the title of the Document and satisfy these
+     conditions, can be treated as verbatim copying in other respects.
 
      If the required texts for either cover are too voluminous to fit
      legibly, you should put the first ones listed (as many as fit
@@ -904,40 +854,39 @@ Appendix A GNU Free Documentation License
      adjacent pages.
 
      If you publish or distribute Opaque copies of the Document
-     numbering more than 100, you must either include a
-     machine-readable Transparent copy along with each Opaque copy, or
-     state in or with each Opaque copy a computer-network location from
-     which the general network-using public has access to download
-     using public-standard network protocols a complete Transparent
-     copy of the Document, free of added material.  If you use the
-     latter option, you must take reasonably prudent steps, when you
-     begin distribution of Opaque copies in quantity, to ensure that
-     this Transparent copy will remain thus accessible at the stated
-     location until at least one year after the last time you
-     distribute an Opaque copy (directly or through your agents or
-     retailers) of that edition to the public.
+     numbering more than 100, you must either include a machine-readable
+     Transparent copy along with each Opaque copy, or state in or with
+     each Opaque copy a computer-network location from which the general
+     network-using public has access to download using public-standard
+     network protocols a complete Transparent copy of the Document, free
+     of added material.  If you use the latter option, you must take
+     reasonably prudent steps, when you begin distribution of Opaque
+     copies in quantity, to ensure that this Transparent copy will
+     remain thus accessible at the stated location until at least one
+     year after the last time you distribute an Opaque copy (directly or
+     through your agents or retailers) of that edition to the public.
 
      It is requested, but not required, that you contact the authors of
-     the Document well before redistributing any large number of
-     copies, to give them a chance to provide you with an updated
-     version of the Document.
+     the Document well before redistributing any large number of copies,
+     to give them a chance to provide you with an updated version of the
+     Document.
 
   4. MODIFICATIONS
 
      You may copy and distribute a Modified Version of the Document
      under the conditions of sections 2 and 3 above, provided that you
-     release the Modified Version under precisely this License, with
-     the Modified Version filling the role of the Document, thus
-     licensing distribution and modification of the Modified Version to
-     whoever possesses a copy of it.  In addition, you must do these
-     things in the Modified Version:
+     release the Modified Version under precisely this License, with the
+     Modified Version filling the role of the Document, thus licensing
+     distribution and modification of the Modified Version to whoever
+     possesses a copy of it.  In addition, you must do these things in
+     the Modified Version:
 
        A. Use in the Title Page (and on the covers, if any) a title
-          distinct from that of the Document, and from those of
-          previous versions (which should, if there were any, be listed
-          in the History section of the Document).  You may use the
-          same title as a previous version if the original publisher of
-          that version gives permission.
+          distinct from that of the Document, and from those of previous
+          versions (which should, if there were any, be listed in the
+          History section of the Document).  You may use the same title
+          as a previous version if the original publisher of that
+          version gives permission.
 
        B. List on the Title Page, as authors, one or more persons or
           entities responsible for authorship of the modifications in
@@ -960,72 +909,71 @@ Appendix A GNU Free Documentation License
           the Addendum below.
 
        G. Preserve in that license notice the full lists of Invariant
-          Sections and required Cover Texts given in the Document's
+          Sections and required Cover Texts given in the Document’s
           license notice.
 
        H. Include an unaltered copy of this License.
 
-       I. Preserve the section Entitled "History", Preserve its Title,
+       I. Preserve the section Entitled “History”, Preserve its Title,
           and add to it an item stating at least the title, year, new
-          authors, and publisher of the Modified Version as given on
-          the Title Page.  If there is no section Entitled "History" in
-          the Document, create one stating the title, year, authors,
-          and publisher of the Document as given on its Title Page,
-          then add an item describing the Modified Version as stated in
-          the previous sentence.
+          authors, and publisher of the Modified Version as given on the
+          Title Page.  If there is no section Entitled “History” in the
+          Document, create one stating the title, year, authors, and
+          publisher of the Document as given on its Title Page, then add
+          an item describing the Modified Version as stated in the
+          previous sentence.
 
        J. Preserve the network location, if any, given in the Document
           for public access to a Transparent copy of the Document, and
           likewise the network locations given in the Document for
-          previous versions it was based on.  These may be placed in
-          the "History" section.  You may omit a network location for a
-          work that was published at least four years before the
-          Document itself, or if the original publisher of the version
-          it refers to gives permission.
+          previous versions it was based on.  These may be placed in the
+          “History” section.  You may omit a network location for a work
+          that was published at least four years before the Document
+          itself, or if the original publisher of the version it refers
+          to gives permission.
 
-       K. For any section Entitled "Acknowledgements" or "Dedications",
-          Preserve the Title of the section, and preserve in the
-          section all the substance and tone of each of the contributor
+       K. For any section Entitled “Acknowledgements” or “Dedications”,
+          Preserve the Title of the section, and preserve in the section
+          all the substance and tone of each of the contributor
           acknowledgements and/or dedications given therein.
 
-       L. Preserve all the Invariant Sections of the Document,
-          unaltered in their text and in their titles.  Section numbers
-          or the equivalent are not considered part of the section
-          titles.
+       L. Preserve all the Invariant Sections of the Document, unaltered
+          in their text and in their titles.  Section numbers or the
+          equivalent are not considered part of the section titles.
 
-       M. Delete any section Entitled "Endorsements".  Such a section
+       M. Delete any section Entitled “Endorsements”.  Such a section
           may not be included in the Modified Version.
 
        N. Do not retitle any existing section to be Entitled
-          "Endorsements" or to conflict in title with any Invariant
+          “Endorsements” or to conflict in title with any Invariant
           Section.
 
        O. Preserve any Warranty Disclaimers.
 
      If the Modified Version includes new front-matter sections or
      appendices that qualify as Secondary Sections and contain no
-     material copied from the Document, you may at your option
-     designate some or all of these sections as invariant.  To do this,
-     add their titles to the list of Invariant Sections in the Modified
-     Version's license notice.  These titles must be distinct from any
-     other section titles.
+     material copied from the Document, you may at your option designate
+     some or all of these sections as invariant.  To do this, add their
+     titles to the list of Invariant Sections in the Modified Version’s
+     license notice.  These titles must be distinct from any other
+     section titles.
 
-     You may add a section Entitled "Endorsements", provided it contains
+     You may add a section Entitled “Endorsements”, provided it contains
      nothing but endorsements of your Modified Version by various
-     parties--for example, statements of peer review or that the text
-     has been approved by an organization as the authoritative
-     definition of a standard.
+     parties—for example, statements of peer review or that the text has
+     been approved by an organization as the authoritative definition of
+     a standard.
 
      You may add a passage of up to five words as a Front-Cover Text,
-     and a passage of up to 25 words as a Back-Cover Text, to the end
-     of the list of Cover Texts in the Modified Version.  Only one
-     passage of Front-Cover Text and one of Back-Cover Text may be
-     added by (or through arrangements made by) any one entity.  If the
-     Document already includes a cover text for the same cover,
-     previously added by you or by arrangement made by the same entity
-     you are acting on behalf of, you may not add another; but you may
-     replace the old one, on explicit permission from the previous
-     publisher that added the old one.
+     and a passage of up to 25 words as a Back-Cover Text, to the end of
+     the list of Cover Texts in the Modified Version.  Only one passage
+     of Front-Cover Text and one of Back-Cover Text may be added by (or
+     through arrangements made by) any one entity.  If the Document
+     already includes a cover text for the same cover, previously added
+     by you or by arrangement made by the same entity you are acting on
+     behalf of, you may not add another; but you may replace the old
+     one, on explicit permission from the previous publisher that added
+     the old one.
 
      The author(s) and publisher(s) of the Document do not by this
      License give permission to use their names for publicity for or to
@@ -1035,8 +983,8 @@ Appendix A GNU Free Documentation License
 
      You may combine the Document with other documents released under
      this License, under the terms defined in section 4 above for
-     modified versions, provided that you include in the combination
-     all of the Invariant Sections of all of the original documents,
+     modified versions, provided that you include in the combination all
+     of the Invariant Sections of all of the original documents,
      unmodified, and list them all as Invariant Sections of your
      combined work in its license notice, and that you preserve all
      their Warranty Disclaimers.
@@ -1052,10 +1000,10 @@ Appendix A GNU Free Documentation License
      combined work.
 
      In the combination, you must combine any sections Entitled
-     "History" in the various original documents, forming one section
-     Entitled "History"; likewise combine any sections Entitled
-     "Acknowledgements", and any sections Entitled "Dedications".  You
-     must delete all sections Entitled "Endorsements."
+     “History” in the various original documents, forming one section
+     Entitled “History”; likewise combine any sections Entitled
+     “Acknowledgements”, and any sections Entitled “Dedications”.  You
+     must delete all sections Entitled “Endorsements.”
 
   6. COLLECTIONS OF DOCUMENTS
 
@@ -1063,29 +1011,29 @@ Appendix A GNU Free Documentation License
      documents released under this License, and replace the individual
      copies of this License in the various documents with a single copy
      that is included in the collection, provided that you follow the
-     rules of this License for verbatim copying of each of the
-     documents in all other respects.
+     rules of this License for verbatim copying of each of the documents
+     in all other respects.
 
      You may extract a single document from such a collection, and
      distribute it individually under this License, provided you insert
-     a copy of this License into the extracted document, and follow
-     this License in all other respects regarding verbatim copying of
-     that document.
+     a copy of this License into the extracted document, and follow this
+     License in all other respects regarding verbatim copying of that
+     document.
 
   7. AGGREGATION WITH INDEPENDENT WORKS
 
      A compilation of the Document or its derivatives with other
-     separate and independent documents or works, in or on a volume of
-     a storage or distribution medium, is called an "aggregate" if the
+     separate and independent documents or works, in or on a volume of a
+     storage or distribution medium, is called an “aggregate” if the
      copyright resulting from the compilation is not used to limit the
-     legal rights of the compilation's users beyond what the individual
+     legal rights of the compilation’s users beyond what the individual
      works permit.  When the Document is included in an aggregate, this
      License does not apply to the other works in the aggregate which
      are not themselves derivative works of the Document.
 
      If the Cover Text requirement of section 3 is applicable to these
      copies of the Document, then if the Document is less than one half
-     of the entire aggregate, the Document's Cover Texts may be placed
+     of the entire aggregate, the Document’s Cover Texts may be placed
      on covers that bracket the Document within the aggregate, or the
      electronic equivalent of covers if the Document is in electronic
      form.  Otherwise they must appear on printed covers that bracket
@@ -1107,8 +1055,8 @@ Appendix A GNU Free Documentation License
      this License or a notice or disclaimer, the original version will
      prevail.
 
-     If a section in the Document is Entitled "Acknowledgements",
-     "Dedications", or "History", the requirement (section 4) to
+     If a section in the Document is Entitled “Acknowledgements”,
+     “Dedications”, or “History”, the requirement (section 4) to
      Preserve its Title (section 1) will typically require changing the
      actual title.
 
@@ -1119,26 +1067,26 @@ Appendix A GNU Free Documentation License
      attempt to copy, modify, sublicense or distribute the Document is
      void, and will automatically terminate your rights under this
      License.  However, parties who have received copies, or rights,
-     from you under this License will not have their licenses
-     terminated so long as such parties remain in full compliance.
+     from you under this License will not have their licenses terminated
+     so long as such parties remain in full compliance.
 
- 10. FUTURE REVISIONS OF THIS LICENSE
+  10. FUTURE REVISIONS OF THIS LICENSE
 
      The Free Software Foundation may publish new, revised versions of
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     `http://www.gnu.org/copyleft/'.
+     <http://www.gnu.org/copyleft/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
-     version of this License "or any later version" applies to it, you
+     version of this License “or any later version” applies to it, you
      have the option of following the terms and conditions either of
      that specified version or of any later version that has been
-     published (not as a draft) by the Free Software Foundation.  If
-     the Document does not specify a version number of this License,
-     you may choose any version ever published (not as a draft) by the
-     Free Software Foundation.
+     published (not as a draft) by the Free Software Foundation.  If the
+     Document does not specify a version number of this License, you may
+     choose any version ever published (not as a draft) by the Free
+     Software Foundation.
 
 A.1 ADDENDUM: How to Use This License For Your Documents
 ========================================================
@@ -1156,7 +1104,7 @@ notices just after the title page:
        Free Documentation License''.
 
    If you have Invariant Sections, Front-Cover Texts and Back-Cover
-Texts, replace the "with...Texts." line with this:
+Texts, replace the “with...Texts.” line with this:
 
          with the Invariant Sections being LIST THEIR TITLES, with
          the Front-Cover Texts being LIST, and with the Back-Cover Texts
@@ -1167,9 +1115,9 @@ combination of the three, merge those two alternatives to suit the
 situation.
 
    If your document contains nontrivial examples of program code, we
-recommend releasing these examples in parallel under your choice of
-free software license, such as the GNU General Public License, to
-permit their use in free software.
+recommend releasing these examples in parallel under your choice of free
+software license, such as the GNU General Public License, to permit
+their use in free software.
 
 
 File: mcalib.info,  Node: Index,  Next: Function Index,  Prev: License,  Up: Top
@@ -1180,34 +1128,34 @@ Index
  [index ]
 * Menu:
 
-* Arithmetic Functions:                  MCALIB Interface.    (line 176)
-* Background:                            Background.          (line   6)
-* Build Targets:                         Installation.        (line 109)
-* CIL:                                   Installation.        (line  40)
-* cilly:                                 Installation.        (line  40)
-* Comparison Functions:                  MCALIB Interface.    (line 237)
-* Compilation:                           MCALIB Interface.    (line 124)
+* Arithmetic Functions:                  MCALIB Interface.    (line 170)
+* Background:                            Background.          (line   5)
+* Build Targets:                         Installation.        (line 101)
+* CIL:                                   Installation.        (line  34)
+* cilly:                                 Installation.        (line  34)
+* Comparison Functions:                  MCALIB Interface.    (line 217)
+* Compilation:                           MCALIB Interface.    (line 123)
 * Control Parameters and Symbols:        MCALIB Interface.    (line  65)
-* dvi:                                   Installation.        (line 122)
+* dvi:                                   Installation.        (line 114)
 * GNU Free Documentation License:        License.             (line   6)
 * Header Files:                          MCALIB Interface.    (line  51)
-* html:                                  Installation.        (line 126)
-* inexact function:                      Background.          (line 128)
-* info:                                  Installation.        (line 130)
+* html:                                  Installation.        (line 118)
+* inexact function:                      Background.          (line 129)
+* info:                                  Installation.        (line 122)
 * Installation:                          Installation.        (line   6)
-* Interface:                             MCALIB Interface.    (line   6)
+* Interface:                             MCALIB Interface.    (line   5)
 * Introduction:                          Introduction.        (line   6)
-* MCALIB Installation:                   Installation.        (line  76)
+* MCALIB Installation:                   Installation.        (line  69)
 * Monte Carlo Arithmetic:                Background.          (line   9)
-* MPFR:                                  Background.          (line  86)
-* pdf:                                   Installation.        (line 134)
-* Pre-requisite Libraries:               Installation.        (line  16)
-* ps:                                    Installation.        (line 138)
-* Random Number Generator:               MCALIB Interface.    (line 104)
-* Seed Value:                            MCALIB Interface.    (line 104)
+* MPFR:                                  Background.          (line  87)
+* pdf:                                   Installation.        (line 126)
+* Pre-requisite Libraries:               Installation.        (line  15)
+* ps:                                    Installation.        (line 130)
+* Random Number Generator:               MCALIB Interface.    (line 103)
+* Seed Value:                            MCALIB Interface.    (line 103)
 * Shared Library Interface:              MCALIB Interface.    (line   9)
 * Software License:                      Conditions.          (line   6)
-* Source to Source Compilation:          Background.          (line  55)
+* Source to Source Compilation:          Background.          (line  56)
 
 
 File: mcalib.info,  Node: Function Index,  Prev: Index,  Up: Top
@@ -1218,53 +1166,53 @@ Function and Type Index
  [index ]
 * Menu:
 
-* _doubleadd:                            MCALIB Interface.    (line 195)
-* _doublediv:                            MCALIB Interface.    (line 204)
-* _doubleeq:                             MCALIB Interface.    (line 259)
-* _doublege:                             MCALIB Interface.    (line 274)
-* _doublegt:                             MCALIB Interface.    (line 268)
-* _doublele:                             MCALIB Interface.    (line 271)
-* _doublelt:                             MCALIB Interface.    (line 265)
-* _doublemul:                            MCALIB Interface.    (line 201)
-* _doublene:                             MCALIB Interface.    (line 262)
-* _doubleneg:                            MCALIB Interface.    (line 207)
-* _doublesub:                            MCALIB Interface.    (line 198)
-* _floatadd:                             MCALIB Interface.    (line 180)
-* _floatdiv:                             MCALIB Interface.    (line 189)
-* _floateq:                              MCALIB Interface.    (line 241)
-* _floatge:                              MCALIB Interface.    (line 256)
-* _floatgt:                              MCALIB Interface.    (line 250)
-* _floatle:                              MCALIB Interface.    (line 253)
-* _floatlt:                              MCALIB Interface.    (line 247)
-* _floatmul:                             MCALIB Interface.    (line 186)
-* _floatne:                              MCALIB Interface.    (line 244)
-* _floatneg:                             MCALIB Interface.    (line 192)
-* _floatsub:                             MCALIB Interface.    (line 183)
-* _longadd:                              MCALIB Interface.    (line 210)
-* _longdiv:                              MCALIB Interface.    (line 225)
-* _longeq:                               MCALIB Interface.    (line 277)
-* _longge:                               MCALIB Interface.    (line 293)
-* _longgt:                               MCALIB Interface.    (line 286)
-* _longle:                               MCALIB Interface.    (line 289)
-* _longlt:                               MCALIB Interface.    (line 283)
-* _longmul:                              MCALIB Interface.    (line 220)
-* _longne:                               MCALIB Interface.    (line 280)
-* _longneg:                              MCALIB Interface.    (line 230)
-* _longsub:                              MCALIB Interface.    (line 215)
+* _doubleadd:                            MCALIB Interface.    (line 183)
+* _doublediv:                            MCALIB Interface.    (line 189)
+* _doubleeq:                             MCALIB Interface.    (line 232)
+* _doublege:                             MCALIB Interface.    (line 242)
+* _doublegt:                             MCALIB Interface.    (line 238)
+* _doublele:                             MCALIB Interface.    (line 240)
+* _doublelt:                             MCALIB Interface.    (line 236)
+* _doublemul:                            MCALIB Interface.    (line 187)
+* _doublene:                             MCALIB Interface.    (line 234)
+* _doubleneg:                            MCALIB Interface.    (line 191)
+* _doublesub:                            MCALIB Interface.    (line 185)
+* _floatadd:                             MCALIB Interface.    (line 173)
+* _floatdiv:                             MCALIB Interface.    (line 179)
+* _floateq:                              MCALIB Interface.    (line 220)
+* _floatge:                              MCALIB Interface.    (line 230)
+* _floatgt:                              MCALIB Interface.    (line 226)
+* _floatle:                              MCALIB Interface.    (line 228)
+* _floatlt:                              MCALIB Interface.    (line 224)
+* _floatmul:                             MCALIB Interface.    (line 177)
+* _floatne:                              MCALIB Interface.    (line 222)
+* _floatneg:                             MCALIB Interface.    (line 181)
+* _floatsub:                             MCALIB Interface.    (line 175)
+* _longadd:                              MCALIB Interface.    (line 193)
+* _longdiv:                              MCALIB Interface.    (line 205)
+* _longeq:                               MCALIB Interface.    (line 244)
+* _longge:                               MCALIB Interface.    (line 255)
+* _longgt:                               MCALIB Interface.    (line 250)
+* _longle:                               MCALIB Interface.    (line 252)
+* _longlt:                               MCALIB Interface.    (line 248)
+* _longmul:                              MCALIB Interface.    (line 201)
+* _longne:                               MCALIB Interface.    (line 246)
+* _longneg:                              MCALIB Interface.    (line 209)
+* _longsub:                              MCALIB Interface.    (line 197)
 
 
 
 Tag Table:
-Node: Top800
-Node: Conditions1791
-Node: Introduction2809
-Node: Installation5121
-Node: Background9398
-Node: MCALIB Interface16353
-Node: References26535
-Node: License28000
-Node: Index50414
-Node: Function Index52577
+Node: Top801
+Node: Conditions1792
+Node: Introduction2811
+Node: Installation5135
+Node: Background9625
+Node: MCALIB Interface16643
+Node: References26821
+Node: License28293
+Node: Index50853
+Node: Function Index53016
 
 End Tag Table
 

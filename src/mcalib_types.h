@@ -24,7 +24,7 @@
 #include "stdio.h"
 #include "math.h"
 #include "stdlib.h"
-#include "time.h"
+#include <sys/time.h>
 
 #define MCALIB_IEEE 	0
 #define MCALIB_MCA 	1
