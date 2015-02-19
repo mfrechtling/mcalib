@@ -33,7 +33,15 @@ knuth:		knuth.c
 knuth_mca:	knuth_mca.c
 		$(CL) $(CLFLAGS) knuth_mca.c -o knuth $(CLLIBS)
 
+knuth_qmca:	
+		make knuth_mca; ./mcalib_fix.py knuth_mca.cil.c
+		mv knuth_mca.cil.c.new knuth_mca.cil.c
+		gcc -D_GNUCC -E ./knuth_mca.cil.c -o ./knuth_mca.cil.i
+		gcc -D_GNUCC -c -o ./knuth_mca.o ./knuth_mca.cil.i
+		gcc knuth_mca.o -o knuth_mca -lm -lmca
+
+
 .PHONY:		clean
 
 clean:	
-		rm -rf knuth *.cil.c *.i *.o
+		rm -rf knuth_mca *.cil.c *.i *.o

@@ -24,20 +24,33 @@
 #include "mcalib.h"
 
 #define	floatval_t	double
+static int N;
 
 void knuth_test(void) {
 	floatval_t a = 11111113., b = -11111111, c = 7.5111111;
 	floatval_t u, v;
 	u = (a +  b) + c;
 	v = a + (b + c);
-	printf("MODE = %d\tVirtual Precision (t) = %d\nU = %g\tV = %g\n", MCALIB_OP_TYPE, MCALIB_T, u, v);
+	printf("%d, %d, %d, %.16e, %.16e\n", N, MCALIB_RNG_TYPE, MCALIB_T, u, v);
 }
 
-int main(void) {
-	_mca_seed();
-	MCALIB_T = 24;
-	MCALIB_OP_TYPE = MCALIB_MCA;
-	knuth_test();
-	MCALIB_OP_TYPE = MCALIB_IEEE;
+int main(int argc, char *argv[]) {
+	if (argc == 3) {
+		MCALIB_T = atoi(argv[1]);
+		N = atoi(argv[2]);
+	} else {
+		MCALIB_T = 24;
+		N = 100;
+	}
+	_mca_init(4, N);
+	MCALIB_OP_TYPE = MCALIB_OP_MCA;
+	int i, j;
+	for (i = 0; i < 3; i++) {
+		MCALIB_RNG_TYPE = i;
+		for (j = 0; j < N; j++) {
+			knuth_test();
+		}
+	}
+	MCALIB_OP_TYPE = MCALIB_OP_IEEE;
 	return 0;
 }
